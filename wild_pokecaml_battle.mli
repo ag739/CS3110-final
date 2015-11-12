@@ -17,4 +17,4 @@ val battle : pokecaml list -> pokecaml -> unit
 
 (** Takes first pokecaml and second pokecaml as input, returns second pokecaml
   * with lowered HP *)
-val attack : pokecaml -> pokecaml : pokecaml
+val attack : pokecaml -> pokecaml -> pokecaml
