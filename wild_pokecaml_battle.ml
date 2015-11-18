@@ -11,15 +11,13 @@ let all_fainted (camldex : pokecaml list) : bool =
   (check_hp camldex) = 0
 
 let has_won (wild : pokecaml) : bool =
-  failwith "TODO"
-  (*wild.hp = 0*)
+  wild.hp = 0
 
 let catch (wild : pokecaml) : bool =
-  failwith "TODO"
-  (*if wild.hp > 15 then false else true*)
+  if wild.hp > 15 then false else true
 
 let attack (p1 : pokecaml) (p2 : pokecaml) : pokecaml =
-  failwith "TODO"
+  failwith "TODO3"
 
 let battle (camldex : pokecaml list) (wild : pokecaml) : unit=
-  failwith "TODO"
+  failwith "TODO4"
