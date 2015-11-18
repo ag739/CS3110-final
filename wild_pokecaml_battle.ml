@@ -42,7 +42,7 @@ let rec first_pokecaml camldex =
   | [] -> failwith "should have a pokecaml in the camldex"
   | h::t -> if h.hp > 0 then h else first_pokecaml t
 
-let rec print_attacks (attacks : attack list) : unit =
+let rec print_attacks (attacks : (string * int) list) : unit =
   match attacks with
   | [] -> print_newline ()
   | (a,_)::t -> let () = print_string (a ^ "\n") in print_attacks t
@@ -58,7 +58,7 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit 
     let () = print_attacks current_pokecaml.attacks in
     let input = String.lowercase (read_line ()) in
     if input = "catch" then
-      if (catch wild) = true then
+      if (catch wild) = true then failwith "TODO"
         (* TODO: update your camldex and end the battle*)
       else battle camldex wild 1
     else
