@@ -1,10 +1,7 @@
 open Pokecaml
 
-(** A record containing a string of the trainer name, a list of its pokecaml,
-and a string of its introduction *)
-type trainer = {name: string; poke_list: pokecaml list; intro: string}
+type trainer = {name: string; poke_list: string list; intro: string}
 
-(** A list containing all of the trainers *)
 let all_trainers  = [{name = "Chirag"; poke_list = ["Chiragzard"]; intro =
                     "I’m better than you. Someone needs to stop me."}]
 
@@ -22,10 +19,9 @@ let all_fainted (camldex: pokecaml list) : bool =
     | h::t -> h.hp + (check_hp t)) in
   (check_hp camldex) = 0
 
-(** Returns true if all of your pokecaml have 0 hp *)
 let has_lost (camldex: pokecaml list) : bool =
   (all_fainted camldex) = true
 
-(** Return true if all of the trainer’s pokecaml have 0 hp *)
 let has_won (camldex: pokecaml list) : bool =
   (all_fainted camldex) = true
+

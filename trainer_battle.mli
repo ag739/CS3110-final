@@ -1,3 +1,5 @@
+open Pokecaml
+
 (** A record containing a string of the trainer name, a list of its pokecaml,
   * and a string of its introduction
   *)
