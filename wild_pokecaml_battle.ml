@@ -69,9 +69,9 @@ let rec update_camldex_after_attack camldex p =
   | h::t when h.name=p.name -> p::t
   | h::t -> h::(update_camldex_after_attack t p)
 
-let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
-  let current_pokecaml = first_pokecaml camldex in
+let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit =
   if player = 0 then
+    let current_pokecaml = first_pokecaml camldex in
     let () = print_string "It's your turn! What will you do?\n
                            Type 'catch' to catch the wild pokecaml.\n
                            Or, you can type any of your attacks:" in
