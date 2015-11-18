@@ -1,3 +1,5 @@
+type p_type
+
 (** A record containing a string of its name, a list of attacks, a string of its
   * type, and an int HP *)
 type pokecaml

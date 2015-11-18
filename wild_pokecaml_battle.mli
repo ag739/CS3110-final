@@ -1,9 +1,11 @@
+open Pokecaml
+
 (** Returns true if the trainer has caught them all*)
-val all_caught : camldex -> bool
+val all_caught : pokecaml list -> bool
 
 (** Returns true if the all the trainer’s pokecaml have
   * fainted and have HP of 0*)
-val all_fainted : camldex -> bool
+val all_fainted : pokecaml list -> bool
 
 (** Return true if the wild pokecaml has 0 hp *)
 val has_won : pokecaml -> bool
