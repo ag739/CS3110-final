@@ -14,6 +14,7 @@
 #directory "_build";;
 #load "pokecaml.d.cmo";;
 #load "wild_pokecaml_battle.d.cmo";;
+#load "trainer_battle.d.cmo";;
 
 (** For convenience, we open a bunch of modules *)
 open Pokecaml
