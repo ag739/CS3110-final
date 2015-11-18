@@ -30,8 +30,8 @@ let compare_types p1 p2 =
   | (Humanities, Hardware) -> 2
   | (Humanities, Software) -> 1
 
-let attack (p1 : pokecaml) (attack : (string * int) ) (p2 : pokecaml) : pokecaml =
-  let damage = (compare_types p1 p2) * (snd attack) in
+let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
+  let damage = (compare_types p1 p2) * (snd a) in
   let current_hp = p2.hp in
   let new_hp = current_hp - damage in
   if new_hp < 0 then {p2 with hp = 0} else
@@ -47,9 +47,18 @@ let rec print_attacks (attacks : (string * int) list) : unit =
   | [] -> print_newline ()
   | (a,_)::t -> let () = print_string (a ^ "\n") in print_attacks t
 
+let rec get_attack (p: pokecaml) (a : string) : (string * int) =
+  match (p.attacks) with
+  | [] -> failwith "Empty list"
+  | (s,i)::t -> if s = a then (s,i) else get_attack {p with attacks=t} a
+
+let rec valid_attack (p) (input) =
+  match p.attacks with
+  | [] -> false
+  | (s,i)::t -> if s = input then true
+                else valid_attack {p with attacks=t} input
+
 let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit =
-  (* If it is our player, print out possible moves or the option to try to catch. Input must be one of these options or they need to input again. After input, print out damage or result of catch *)
-(* If it is not our player, print out what move the wild pokecaml is playing and the damage *)
   if player = 0 then
     let current_pokecaml = first_pokecaml camldex in
     let () = print_string "It's your turn! What will you do?\n
@@ -62,8 +71,13 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit 
         (* TODO: update your camldex and end the battle*)
       else battle camldex wild 1
     else
-      (* TODO: make sure input is a valid attack *)
-      battle camldex wild 1
+      if (valid_attack current_pokecaml input) then
+        let a = get_attack current_pokecaml input in
+        let wild = attack current_pokecaml a wild in
+        battle camldex wild 1
+      else
+        let () = print_string "You did not enter a valid input.\n" in
+        battle camldex wild 0
   else
     (* TODO: randomly pick the wild pokecaml's attack and adjust hp *)
     let () = print_string (wild.name ^ " attacked with ") in
