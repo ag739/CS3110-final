@@ -104,3 +104,9 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
                             string_of_int(current_pokecaml.hp)) in
     let camldex = update_camldex_after_attack camldex current_pokecaml in
     let () = print_newline() in battle camldex wild 0
+
+let run_wild (camldex : pokecaml list) : unit =
+  let length_pokecamls = List.length all_pokecaml in
+  let random_int = Random.int (length_pokecamls) in
+  let wild = List.nth all_pokecaml random_int in
+  battle camldex wild 0
