@@ -10,7 +10,7 @@ val all_trainers : trainer list
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex and the opponents pokecaml list  *)
-val battle : pokecaml list -> pokecaml list -> unit
+val battle : pokecaml list -> pokecaml list -> pokecaml list
 
 (** Returns true if all of your pokecaml have 0 hp *)
 val has_lost : pokecaml list -> bool
@@ -18,4 +18,4 @@ val has_lost : pokecaml list -> bool
 (** Return true if all of the trainer’s pokecaml have 0 hp *)
 val has_won : pokecaml list -> bool
 
-val run_trainer : pokecaml list -> unit
+val run_trainer : pokecaml list -> pokecaml list

@@ -15,10 +15,10 @@ val catch : pokecaml -> bool
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex and the wild pokecaml*)
-val battle : pokecaml list -> pokecaml -> int -> unit
+val battle : pokecaml list -> pokecaml -> int -> pokecaml list
 
 (** Takes first pokecaml and second pokecaml as input, returns second pokecaml
   * with lowered HP *)
 val attack : pokecaml -> (string * int) -> pokecaml -> pokecaml
 
-val run_wild : pokecaml list -> unit
+val run_wild : pokecaml list -> pokecaml list

@@ -25,11 +25,13 @@ let has_won (t_camldex: pokecaml list) : bool =
   (all_fainted t_camldex) = true
 
 (** A battle REPL to handle input and return output.
-  * Takes as input the CamlDex and the opponents pokecaml list  *)
-let battle (p1: pokecaml list) (p2: pokecaml list) : unit =
-  failwith "TODO el oh el u suck"
+  * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
+let battle (p1: pokecaml list) (p2: pokecaml list) : pokecaml list =
+  (*TODO implement*)
+  print_endline "This hasn't been implemented yet";
+  p1
 
-let run_trainer (camldex : pokecaml list) : unit =
+let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in
   let random_int = Random.int (length_trainers) in
   let trainer = List.nth all_trainers random_int in

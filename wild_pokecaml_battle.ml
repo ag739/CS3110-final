@@ -69,10 +69,12 @@ let rec update_camldex_after_attack camldex p =
   | h::t when h.name=p.name -> p::t
   | h::t -> h::(update_camldex_after_attack t p)
 
-let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
-  (*Things we still need to deal with:
-    What if your pokecaml dies? Need to switch current_pokecaml
-    Need to check has_won and has_lost in the beginning of each turn*)
+let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
+  (*TODO: What if your pokecaml dies? Need to switch current_pokecaml.
+          Need to check has_lost*)
+  if has_won wild then
+    let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
+  else
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     let () = print_string "It's your turn! What will you do?\n
@@ -82,8 +84,8 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
     let input = read_line () in
     if input = "catch" then
       if (catch wild) = true then
-        (* TODO: update your camldex and end the battle*)
-        print_string ("You successfully caught " ^ wild.name ^ " !")
+        let () = print_endline ("You successfully caught " ^ wild.name ^ "!") in
+        camldex@[wild]
       else let () =print_string("Catch did not work\n") in battle camldex wild 1
     else
       if (valid_attack current_pokecaml input) then
@@ -105,7 +107,7 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
     let camldex = update_camldex_after_attack camldex current_pokecaml in
     let () = print_newline() in battle camldex wild 0
 
-let run_wild (camldex : pokecaml list) : unit =
+let run_wild (camldex : pokecaml list) : pokecaml list =
   let length_pokecamls = List.length all_pokecaml in
   let random_int = Random.int (length_pokecamls) in
   let wild = List.nth all_pokecaml random_int in
