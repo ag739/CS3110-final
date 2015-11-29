@@ -78,11 +78,14 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     let () = print_string "It's your turn! What will you do?\n
-                           Type 'catch' to catch the wild pokecaml.\n
+                           Type \"catch\" to catch the wild pokecaml.\n
+                           Type \"switch\" to switch your pokecaml.\n
                            Or, you can type any of your attacks:\n" in
     let () = print_attacks current_pokecaml.attacks in
     let input = read_line () in
-    if input = "catch" then
+    if input = "switch" then
+      battle (switch camldex) wild 1
+    else if input = "catch" then
       if (catch wild) = true then
         let () = print_endline ("You successfully caught " ^ wild.name ^ "!") in
         camldex@[wild]

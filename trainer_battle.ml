@@ -28,8 +28,12 @@ let has_won (t_camldex: pokecaml list) : bool =
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let battle (p1: pokecaml list) (p2: pokecaml list) : pokecaml list =
   (*TODO implement*)
-  print_endline "This hasn't been implemented yet";
-  p1
+  if has_lost p1 then
+    let () = print_string "You lost...I guess you won't be the next PokeCaml master.\n
+    GAMEOVER" in p1
+  else if has_won p2 then
+    let () = print_endline "You defeated this trainer!" in p1
+  else let () = print_endline "This hasn't been implemented yet" in p1
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in

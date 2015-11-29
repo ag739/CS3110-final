@@ -10,3 +10,7 @@
 
   (** A list of all pokecaml in the game*)
   val all_pokecaml : pokecaml list
+
+  (** A switch function to allow you to switch pokecaml during battles
+  It will allow you to choose which pokecaml is the first in your camldex.*)
+  val switch: pokecaml list -> pokecaml list
