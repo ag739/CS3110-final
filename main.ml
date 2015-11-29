@@ -29,11 +29,21 @@ let rec print_camldex (camldex: pokecaml list) : string =
   | h::t -> "Name: "^h.name^"; Type: "^(print_type h.pokecaml_type)^
             "; Moves: "^(pokecaml_moves (h.attacks))^"\n\n"^(print_camldex t)
 
+let rec quitting (input : string) : bool =
+  if input = "n" then false else
+  if input = "y" then
+    let () = print_endline "I guess you won't be the next Pokecaml master...goodbye!"
+    in true
+  else let () = print_endline "Please enter Y or N" in
+  quitting (String.lowercase (read_line ()))
+
 let rec game (camldex: pokecaml list) : unit =
   let () = print_string ">>> " in
   let input = read_line () in
   match find_command input with
-  | Quit -> let () = print_endline "I guess you won't be the next Pokecaml master...goodbye!" in exit 0
+  | Quit -> let () = print_endline "Are you sure you want to quit? Y/N" in
+            let input = String.lowercase (read_line ()) in
+            if quitting input then exit 0 else game camldex
   | Camldex -> let () = print_endline (print_camldex camldex) in game camldex
   | Help -> let () = print_endline "Possible commands are:\n
                    \"Battle\" to fight an opponent\n
