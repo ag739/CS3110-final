@@ -17,3 +17,5 @@ val has_lost : pokecaml list -> bool
 
 (** Return true if all of the trainer’s pokecaml have 0 hp *)
 val has_won : pokecaml list -> bool
+
+val run_trainer : pokecaml list -> unit

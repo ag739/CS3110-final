@@ -109,4 +109,5 @@ let run_wild (camldex : pokecaml list) : unit =
   let length_pokecamls = List.length all_pokecaml in
   let random_int = Random.int (length_pokecamls) in
   let wild = List.nth all_pokecaml random_int in
+  let () = print_endline ("A wild " ^ wild.name ^ " appeared!") in
   battle camldex wild 0

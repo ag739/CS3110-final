@@ -1,6 +1,6 @@
 open Pokecaml
 open Wild_pokecaml_battle
-
+open Trainer_battle
 
 type command = Quit | Camldex | Help | Battle | Undetermined
 
@@ -39,7 +39,7 @@ let rec game (camldex: pokecaml list) : unit =
                    \"Battle\" to fight an opponent\n
                    \"Camldex\" to see your Camldex\n
                    \"Quit\" to end the game forever" in game camldex
-  | Battle -> if Random.int 2 = 0 then run_wild camldex else failwith "unimplemented"
+  | Battle -> if Random.int 2 = 0 then run_wild camldex else run_trainer camldex
   | Undetermined -> let () =
       print_endline "Your command was not recognized. Please type a valid command or type help."
       in game camldex
