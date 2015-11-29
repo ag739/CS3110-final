@@ -20,3 +20,5 @@ val battle : pokecaml list -> pokecaml -> int -> unit
 (** Takes first pokecaml and second pokecaml as input, returns second pokecaml
   * with lowered HP *)
 val attack : pokecaml -> (string * int) -> pokecaml -> pokecaml
+
+val run_wild : pokecaml list -> unit

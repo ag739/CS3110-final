@@ -1,6 +1,5 @@
 open Pokecaml
 
-(* TODO: should all_caught be in main? *)
 let all_caught (camldex : pokecaml list): bool =
   (List.length camldex) = (List.length all_pokecaml)
 
@@ -74,8 +73,6 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
   (*Things we still need to deal with:
     What if your pokecaml dies? Need to switch current_pokecaml
     Need to check has_won and has_lost in the beginning of each turn*)
-  if (all_fainted camldex) then print_string "You have lost this battle" else
-  if (has_won wild) then print_string "You have won this battle!" else
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     let () = print_string "It's your turn! What will you do?\n
@@ -107,3 +104,9 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : unit=
                             string_of_int(current_pokecaml.hp)) in
     let camldex = update_camldex_after_attack camldex current_pokecaml in
     let () = print_newline() in battle camldex wild 0
+
+let run_wild (camldex : pokecaml list) : unit =
+  let length_pokecamls = List.length all_pokecaml in
+  let random_int = Random.int (length_pokecamls) in
+  let wild = List.nth all_pokecaml random_int in
+  battle camldex wild 0

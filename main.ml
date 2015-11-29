@@ -1,0 +1,68 @@
+open Pokecaml
+open Wild_pokecaml_battle
+
+
+type command = Quit | Camldex | Help | Battle | Undetermined
+
+let find_command (input : string) : command =
+  match (String.lowercase input) with
+  | "quit" -> Quit
+  | "camldex" -> Camldex
+  | "help" -> Help
+  | "battle" -> Battle
+  | _ -> Undetermined
+
+let rec pokecaml_moves (moves : (string*int) list) =
+  match moves with
+  | [] -> ""
+  | h::t -> ((fst h)^"; ")^(pokecaml_moves t)
+
+let print_type (poke_type: p_type) =
+  match poke_type with
+  | Hardware -> "Hardware"
+  | Software -> "Software"
+  | Humanities -> "Humanities"
+
+let rec print_camldex (camldex: pokecaml list) : string =
+  match camldex with
+  | [] -> ""
+  | h::t -> "Name: "^h.name^"; Type: "^(print_type h.pokecaml_type)^
+            "; Moves: "^(pokecaml_moves (h.attacks))^"\n\n"^(print_camldex t)
+
+let rec game (camldex: pokecaml list) : unit =
+  let () = print_string ">>> " in
+  let input = read_line () in
+  match find_command input with
+  | Quit -> let () = print_endline "Goodbye!" in exit 0
+  | Camldex -> let () = print_endline (print_camldex camldex) in game camldex
+  | Help -> let () = print_endline "Possible commands are:\n
+                   \"Battle\" to fight an opponent\n
+                   \"Camldex\" to see your Camldex\n
+                   \"Quit\" to end the game forever" in game camldex
+  | Battle -> if Random.int 2 = 0 then run_wild camldex else failwith "unimplemented"
+  | Undetermined -> let () =
+      print_endline "Your command was not recognized. Please type a valid command or type help."
+      in game camldex
+
+let rec first_camldex input =
+  match (String.lowercase input) with
+  | "recursee" -> let () = print_endline "You have picked Recursee!" in
+                  [{name = "Recursee"; attacks= [("Base case", 8); ("Rec", 12);
+                  ("Return", 7); ("Tail-recursion", 10)];
+                  pokecaml_type = Software; hp= 100}]
+  | "deferredata" -> let () = print_endline "You have picked Deferredata!" in
+                  [{name = "Deferredata"; attacks= [("Bind", 6); ("Upon", 4);
+                  ("Return", 7); (">>=", 12)];
+                  pokecaml_type = Hardware; hp= 100}]
+  | "proofle" -> let () = print_endline "You have picked Proofle!" in
+                  [{name = "Proofle"; attacks= [("Induction", 10);
+                  ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
+                  pokecaml_type = Humanities; hp= 100}]
+  | _ -> let () = print_string "Please try again, Professor Michael \"Oak\" Clarkson does not have that Pokecaml!\n\n>>> " in first_camldex (read_line ())
+
+
+
+let () =
+  let () = print_endline "Welcome to Pokecaml! Catchy text goes here!!" in
+  let () = print_string "You can choose between Recursee, a Software Pokecaml, Deferredata, a Hardware Pokecaml, or Proofle, a Humanities Pokemon. Which do you pick?\n\n>>> " in
+  game (first_camldex (read_line ()))
