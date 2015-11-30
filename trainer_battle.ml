@@ -27,7 +27,8 @@ let has_won (t_camldex: pokecaml list) : bool =
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let battle (p1: pokecaml list) (p2: pokecaml list) : pokecaml list =
-  (*TODO implement*)
+  (*TODO implement
+    Take out Chirag*)
   if has_lost p1 then
     let () = print_string "You lost...I guess you won't be the next PokeCaml master.\n
     GAMEOVER" in p1

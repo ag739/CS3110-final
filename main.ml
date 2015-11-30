@@ -38,6 +38,7 @@ let rec quitting (input : string) : bool =
   quitting (String.lowercase (read_line ()))
 
 let rec game (camldex: pokecaml list) : unit =
+  (*TODO: implement win and lose the game*)
   let () = print_string ">>> " in
   let input = read_line () in
   match find_command input with

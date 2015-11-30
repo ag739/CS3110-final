@@ -39,7 +39,7 @@ let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
 
 let rec first_pokecaml camldex =
   match camldex with
-  | [] -> failwith "should have a pokecaml in the camldex"
+  | [] -> failwith "TODO: need a has_lost function"
   | h::t -> if h.hp > 0 then h else first_pokecaml t
 
 let rec print_attacks (attacks : (string * int) list) : unit =
@@ -71,7 +71,8 @@ let rec update_camldex_after_attack camldex p =
 
 let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
   (*TODO: What if your pokecaml dies? Need to switch current_pokecaml.
-          Need to check has_lost*)
+          Need to check has_lost
+          Case insensitive user input*)
   if has_won wild then
     let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
   else
