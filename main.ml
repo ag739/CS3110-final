@@ -2,7 +2,7 @@ open Pokecaml
 open Wild_pokecaml_battle
 open Trainer_battle
 
-type command = Quit | Camldex | Help | Battle | Undetermined
+type command = Quit | Camldex | Help | Battle | Heal | Undetermined
 
 let all_caught (camldex : pokecaml list): bool =
   (List.length camldex) = (List.length all_pokecaml)
@@ -10,6 +10,7 @@ let all_caught (camldex : pokecaml list): bool =
 let find_command (input : string) : command =
   match (String.lowercase input) with
   | "quit" -> Quit
+  | "heal pokecaml" -> Heal
   | "camldex" -> Camldex
   | "help" -> Help
   | "battle" -> Battle
@@ -40,6 +41,18 @@ let rec quitting (input : string) : bool =
   else let () = print_endline "Please enter Y or N" in
   quitting (String.lowercase (read_line ()))
 
+let rec get_list_index lst item ind =
+  match lst with
+  | [] -> failwith "item not in list"
+  | h::t -> if h.name = item.name then ind else get_list_index t item (ind+1)
+
+let rec heal_all camldex =
+  match camldex with
+  | [] -> []
+  | h::t -> let index = get_list_index all_pokecaml h 0 in
+            let f = fun x -> List.nth all_pokecaml index = x in
+            let p = List.find f all_pokecaml in p::(heal_all t)
+
 let rec game (camldex: pokecaml list) : unit =
   if all_caught camldex
     then print_endline "You are a pokecaml master! GAMEOVER"
@@ -51,9 +64,12 @@ let rec game (camldex: pokecaml list) : unit =
             let input = String.lowercase (read_line ()) in
             if quitting input then exit 0 else game camldex
   | Camldex -> let () = print_endline (print_camldex camldex) in game camldex
+  | Heal -> let () = print_endline "Successfully healed all pokecaml in camldex!" in
+            game (heal_all camldex)
   | Help -> let () = print_endline "Possible commands are:\n
                    \"Battle\" to fight an opponent\n
                    \"Camldex\" to see your Camldex\n
+                   \"Heal Pokecaml\" to heal all of your pokecaml\n
                    \"Quit\" to end the game forever" in game camldex
   | Battle -> let camldex =
             (if Random.int 2 = 0 then run_wild camldex else run_trainer camldex) in game camldex
@@ -64,14 +80,20 @@ let rec game (camldex: pokecaml list) : unit =
 let rec first_camldex input =
   match (String.lowercase input) with
   | "recursee" -> let () = print_endline "You have picked Recursee!" in
+                  let () = print_endline "You're ready to start your journey!
+                  Type \"help\" if you forgot the commands I taught you." in
                   [{name = "Recursee"; attacks= [("Base case", 8); ("Rec", 12);
                   ("Return", 7); ("Tail-recursion", 10)];
                   pokecaml_type = Software; hp= 100}]
   | "deferredata" -> let () = print_endline "You have picked Deferredata!" in
+                  let () = print_endline "You're ready to start your journey!
+                  Type \"help\" if you forgot the commands I taught you." in
                   [{name = "Deferredata"; attacks= [("Bind", 6); ("Upon", 4);
                   ("Return", 7); (">>=", 12)];
                   pokecaml_type = Hardware; hp= 100}]
   | "proofle" -> let () = print_endline "You have picked Proofle!" in
+                  let () = print_endline "You're ready to start your journey!
+                  Type \"help\" if you forgot the commands I taught you." in
                   [{name = "Proofle"; attacks= [("Induction", 10);
                   ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
                   pokecaml_type = Humanities; hp= 100}]
@@ -92,6 +114,7 @@ let () =
   I'll be here to help you out. Remember the commands I taught you in class:
                    \"Battle\" to fight an opponent
                    \"Camldex\" to see your Camldex
+                   \"Heal Pokecaml\" to heal all of your pokecaml
                    \"Quit\" to end the game forever
   I have three Pokecaml, but I can only give you one:
                   Recursee, a Software Pokecaml

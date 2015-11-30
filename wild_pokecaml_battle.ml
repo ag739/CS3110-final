@@ -3,12 +3,17 @@ open Pokecaml
 let catch (wild : pokecaml) : bool =
   if wild.hp > 15 then false else true
 
+let rec list_mem lst item =
+  match lst with
+  | [] -> false
+  | h::t -> if h.name = item.name then true else list_mem t item
+
 let update_camldex_after_catch camldex p =
-  if List.mem p camldex then camldex else camldex@[p]
+  if list_mem camldex p then camldex else camldex@[p]
 
 let rec first_pokecaml camldex =
   match camldex with
-  | [] -> failwith "TODO: need a has_lost function"
+  | [] -> failwith "This should not happen because we check if you lost"
   | h::t -> if h.hp > 0 then h else first_pokecaml t
 
 let rec print_attacks (attacks : (string * int) list) : unit =
@@ -63,7 +68,6 @@ and handle_fainted (current_pokecaml : pokecaml) (camldex : pokecaml list)
     let () = print_newline() in battle (switch camldex) wild 0
 
 and battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
-  (*TODO: Case insensitive user input*)
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     (let () = print_string "It's your turn! What will you do?\n

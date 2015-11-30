@@ -55,10 +55,11 @@ let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
 
 let rec new_lst item lst original_lst=
   match lst with
-  | [] -> []
+  | [] -> let () = print_string "You don't have this pokecaml in your camldex. Pick a different one\n>>> " in
+          new_lst (read_line()) original_lst original_lst
   | h::t -> if String.lowercase (h.name) = String.lowercase (item) then
               if h.hp = 0 then
-                let () = print_endline "This pokecaml has fainted. Pick a different one\n>>> " in
+                let () = print_string "This pokecaml has fainted. Pick a different one\n>>> " in
                 new_lst (read_line()) original_lst original_lst
               else h::t
             else (new_lst item t original_lst)@[h]
@@ -70,7 +71,6 @@ let rec all_names lst =
                 all_names t
 
 let switch (camldex : pokecaml list) =
-  (*TODO: check if user put in valid pokecaml*)
   let () = print_endline "These are the pokecaml in your camldex:" in
   let () = all_names camldex in
   let () = print_string ">>> " in
