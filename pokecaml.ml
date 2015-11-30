@@ -58,7 +58,7 @@ let rec new_lst item lst original_lst=
   | [] -> []
   | h::t -> if String.lowercase (h.name) = String.lowercase (item) then
               if h.hp = 0 then
-                let () = print_endline "This pokecaml has fainted. Pick a different one" in
+                let () = print_endline "This pokecaml has fainted. Pick a different one\n>>> " in
                 new_lst (read_line()) original_lst original_lst
               else h::t
             else (new_lst item t original_lst)@[h]
@@ -73,4 +73,5 @@ let switch (camldex : pokecaml list) =
   (*TODO: check if user put in valid pokecaml*)
   let () = print_endline "These are the pokecaml in your camldex:" in
   let () = all_names camldex in
+  let () = print_string ">>> " in
   new_lst (read_line ()) camldex camldex

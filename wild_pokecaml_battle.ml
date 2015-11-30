@@ -19,12 +19,12 @@ let rec print_attacks (attacks : (string * int) list) : unit =
 let rec get_attack (p: pokecaml) (a : string) : (string * int) =
   match (p.attacks) with
   | [] -> failwith "Empty list"
-  | (s,i)::t -> if s = a then (s,i) else get_attack {p with attacks=t} a
+  | (s,i)::t -> if String.lowercase s = a then (s,i) else get_attack {p with attacks=t} a
 
 let rec valid_attack (p) (input) =
   match p.attacks with
   | [] -> false
-  | (s,i)::t -> if s = input then true
+  | (s,i)::t -> if (String.lowercase s) = input then true
                 else valid_attack {p with attacks=t} input
 
 let wild_attack p =
@@ -38,35 +38,49 @@ let rec update_camldex_after_attack camldex p =
   | h::t when h.name=p.name -> p::t
   | h::t -> h::(update_camldex_after_attack t p)
 
-let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
+let rec perform_user_attack (input : string) (current_pokecaml : pokecaml)
+                        (wild : pokecaml) (camldex : pokecaml list) =
+  if (valid_attack current_pokecaml input) then
+    let a = get_attack current_pokecaml input in
+    let wild = attack current_pokecaml a wild in
+    let () = print_string ("You attacked with " ^ input ^ "\n") in
+    let ()=print_endline(wild.name^"'s HP is now "^string_of_int(wild.hp)) in
+    if has_fainted wild then
+      let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
+    else let () = print_newline () in battle camldex wild 1
+  else
+    let () = print_string "You did not enter a valid input.\n" in
+    battle camldex wild 0
+
+and handle_fainted (current_pokecaml : pokecaml) (camldex : pokecaml list)
+                   (wild : pokecaml) =
+  let () = print_endline (current_pokecaml.name^" fainted!") in
+  if all_fainted camldex then
+    let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
+    exit 0
+  else
+    let () = print_endline "Switch pokecaml..." in
+    let () = print_newline() in battle (switch camldex) wild 0
+
+and battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
   (*TODO: Case insensitive user input*)
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
-    let () = print_string "It's your turn! What will you do?\n
+    (let () = print_string "It's your turn! What will you do?\n
                            Type \"catch\" to catch the wild pokecaml.\n
                            Type \"switch\" to switch your pokecaml.\n
                            Or, you can type any of your attacks:\n" in
     let () = print_attacks current_pokecaml.attacks in
-    let input = read_line () in
-    if input = "switch" then
-      battle (switch camldex) wild 1
-    else if input = "catch" then
+    let () = print_string ">>> " in
+    let input = String.lowercase (read_line ()) in
+    match input with
+    | "switch" -> battle (switch camldex) wild 1
+    | "catch" ->
       if (catch wild) = true then
         let () = print_endline ("You successfully caught " ^ wild.name ^ "!") in
         update_camldex_after_catch camldex wild
       else let () =print_string("Catch did not work\n") in battle camldex wild 1
-    else
-      if (valid_attack current_pokecaml input) then
-        let a = get_attack current_pokecaml input in
-        let wild = attack current_pokecaml a wild in
-        let () = print_string ("You attacked with " ^ input ^ "\n") in
-        let ()=print_string(wild.name^"'s HP is now "^string_of_int(wild.hp)) in
-        if has_fainted wild then
-          let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
-        else let () = print_newline () in battle camldex wild 1
-      else
-        let () = print_string "You did not enter a valid input.\n" in
-        battle camldex wild 0
+    | _ -> perform_user_attack input current_pokecaml wild camldex)
   else
     let opponent_attack = wild_attack wild in
     let current_pokecaml = attack wild opponent_attack current_pokecaml in
@@ -76,13 +90,7 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
                             string_of_int(current_pokecaml.hp)) in
     let camldex = update_camldex_after_attack camldex current_pokecaml in
     if has_fainted current_pokecaml then
-      let () = print_endline (current_pokecaml.name^" fainted!") in
-      if all_fainted camldex then
-        let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
-        exit 0
-      else
-        let () = print_endline "Switch pokecaml..." in
-        let () = print_newline() in battle (switch camldex) wild 0
+      handle_fainted current_pokecaml camldex wild
     else
       let () = print_newline() in battle camldex wild 0
 
