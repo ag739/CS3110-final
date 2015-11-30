@@ -53,21 +53,25 @@ let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
   if new_hp < 0 then {p2 with hp = 0} else
   {p2 with hp = new_hp}
 
-let rec new_lst item lst =
+let rec new_lst item lst original_lst=
   match lst with
   | [] -> []
-  | h::t -> if String.lowercase (h.name) = String.lowercase (item)
-            then h::t else (new_lst item t)@[h]
+  | h::t -> if String.lowercase (h.name) = String.lowercase (item) then
+              if h.hp = 0 then
+                let () = print_endline "This pokecaml has fainted. Pick a different one" in
+                new_lst (read_line()) original_lst original_lst
+              else h::t
+            else (new_lst item t original_lst)@[h]
+
+let rec all_names lst =
+  match lst with
+  | [] -> ()
+  | h::t -> print_endline ("\""^h.name^"\""^"; hp: "^string_of_int(h.hp));
+                all_names t
 
 let switch (camldex : pokecaml list) =
   (*TODO: check if user put in valid pokecaml
           make sure you can't pick a pokecaml with an hp of 0*)
   let () = print_endline "These are the pokecaml in your camldex:" in
-  let rec all_names lst =
-    (match lst with
-      | [] -> ()
-      | h::t -> print_endline ("\""^h.name^"\""^"; hp: "^string_of_int(h.hp));
-                all_names t
-    ) in
   let () = all_names camldex in
-  new_lst (read_line ()) camldex
+  new_lst (read_line ()) camldex camldex

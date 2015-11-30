@@ -39,8 +39,7 @@ let rec update_camldex_after_attack camldex p =
   | h::t -> h::(update_camldex_after_attack t p)
 
 let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
-  (*TODO: Need to output that you're switching the pokecaml when current one dies
-          Case insensitive user input*)
+  (*TODO: Case insensitive user input*)
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     let () = print_string "It's your turn! What will you do?\n
