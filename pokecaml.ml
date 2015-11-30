@@ -70,8 +70,7 @@ let rec all_names lst =
                 all_names t
 
 let switch (camldex : pokecaml list) =
-  (*TODO: check if user put in valid pokecaml
-          make sure you can't pick a pokecaml with an hp of 0*)
+  (*TODO: check if user put in valid pokecaml*)
   let () = print_endline "These are the pokecaml in your camldex:" in
   let () = all_names camldex in
   new_lst (read_line ()) camldex camldex
