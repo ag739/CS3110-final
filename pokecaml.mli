@@ -14,3 +14,13 @@
   (** A switch function to allow you to switch pokecaml during battles
   It will allow you to choose which pokecaml is the first in your camldex.*)
   val switch: pokecaml list -> pokecaml list
+
+  (** Check if list of pokecaml all have hp of 0 *)
+  val all_fainted: pokecaml list -> bool
+
+  (** Check if a single pokecaml has an hp of 0 *)
+  val has_fainted: pokecaml -> bool
+
+(** Takes first pokecaml and second pokecaml as input, returns second pokecaml
+  * with lowered HP *)
+  val attack : pokecaml -> (string * int) -> pokecaml -> pokecaml

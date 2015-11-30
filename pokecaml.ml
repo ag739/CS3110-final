@@ -10,7 +10,7 @@ let camldex = []
 
 let all_pokecaml=[{name = "Camlchu"; attacks= [("electrocute" ,8)];
                     pokecaml_type= Hardware; hp= 100};
-                  {name = "Chiragzard"; attacks= [("piazza", 3)];
+                  {name = "Piazza"; attacks= [("question", 3)];
                     pokecaml_type= Humanities; hp= 100};
                   {name = "Immutabilitypuff"; attacks= [("pattern match", 10);
                     ("infinite recursion", 2)]; pokecaml_type= Software; hp= 100};
@@ -23,6 +23,36 @@ let all_pokecaml=[{name = "Camlchu"; attacks= [("electrocute" ,8)];
                     ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
                     pokecaml_type = Humanities; hp= 100}]
 
+let all_fainted (camldex : pokecaml list) : bool =
+  let rec helper c = (match c with
+  | [] -> 0
+  | h::t -> h.hp + helper t
+  ) in helper camldex = 0
+
+let has_fainted (p : pokecaml) : bool =
+  p.hp = 0
+
+let compare_types p1 p2 =
+  let p1_type = p1.pokecaml_type in
+  let p2_type = p2.pokecaml_type in
+  match p1_type, p2_type with
+  | (Software, Software) -> 3
+  | (Software, Hardware) -> 4
+  | (Software, Humanities) -> 5
+  | (Hardware, Software) -> 2
+  | (Hardware, Hardware) -> 3
+  | (Hardware, Humanities) -> 4
+  | (Humanities, Humanities) -> 3
+  | (Humanities, Hardware) -> 2
+  | (Humanities, Software) -> 1
+
+let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
+  let damage = (compare_types p1 p2) * (snd a) in
+  let current_hp = p2.hp in
+  let new_hp = current_hp - damage in
+  if new_hp < 0 then {p2 with hp = 0} else
+  {p2 with hp = new_hp}
+
 let rec new_lst item lst =
   match lst with
   | [] -> []
@@ -30,7 +60,8 @@ let rec new_lst item lst =
             then h::t else (new_lst item t)@[h]
 
 let switch (camldex : pokecaml list) =
-  (*TODO: check if user put in valid pokecaml*)
+  (*TODO: check if user put in valid pokecaml
+          make sure you can't pick a pokecaml with an hp of 0*)
   let () = print_endline "These are the pokecaml in your camldex:" in
   let rec all_names lst =
     (match lst with

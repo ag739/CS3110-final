@@ -2,37 +2,20 @@ open Pokecaml
 
 type trainer = {name: string; poke_list: pokecaml list; intro: string}
 
-let all_trainers  = [{name = "Chirag";
+let all_trainers  = [{name = "Random trainer";
                       poke_list = [
-                        {name = "Chiragzard"; attacks= [("piazza", 3)];
+                        {name = "Piazza"; attacks= [("question", 3)];
                         pokecaml_type= Humanities; hp= 100};
-                      ]; intro = "I’m better than you. Someone needs to stop me."
+                      ]; intro = "Don't be anonymous...show your face!"
                     }]
-
-(** Checks if all pokecaml in a pokecaml list have fainted, a helper function
-for has_lost and has_won *)
-let all_fainted (camldex: pokecaml list) : bool =
-  let rec check_hp c =
-    (match c with
-    | [] -> 0
-    | h::t -> h.hp + (check_hp t)) in
-  (check_hp camldex) = 0
-
-let has_lost (camldex: pokecaml list) : bool =
-  (all_fainted camldex) = true
-
-let has_won (t_camldex: pokecaml list) : bool =
-  (all_fainted t_camldex) = true
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let battle (p1: pokecaml list) (p2: pokecaml list) : pokecaml list =
-  (*TODO implement
-    Take out Chirag*)
-  if has_lost p1 then
-    let () = print_string "You lost...I guess you won't be the next PokeCaml master.\n
-    GAMEOVER" in p1
-  else if has_won p2 then
+  (*TODO implement*)
+  if all_fainted p1 then
+    let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
+  else if all_fainted p2 then
     let () = print_endline "You defeated this trainer!" in p1
   else let () = print_endline "This hasn't been implemented yet" in p1
 

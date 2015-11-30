@@ -1,41 +1,10 @@
 open Pokecaml
 
-let all_caught (camldex : pokecaml list): bool =
-  (List.length camldex) = (List.length all_pokecaml)
-
-let all_fainted (camldex : pokecaml list) : bool =
-  let rec check_hp c =
-    (match c with
-    | [] -> 0
-    | h::t -> h.hp + (check_hp t)) in
-  (check_hp camldex) = 0
-
-let has_won (wild : pokecaml) : bool =
-  wild.hp = 0
-
 let catch (wild : pokecaml) : bool =
   if wild.hp > 15 then false else true
 
-let compare_types p1 p2 =
-  let p1_type = p1.pokecaml_type in
-  let p2_type = p2.pokecaml_type in
-  match p1_type, p2_type with
-  | (Software, Software) -> 3
-  | (Software, Hardware) -> 4
-  | (Software, Humanities) -> 5
-  | (Hardware, Software) -> 2
-  | (Hardware, Hardware) -> 3
-  | (Hardware, Humanities) -> 4
-  | (Humanities, Humanities) -> 3
-  | (Humanities, Hardware) -> 2
-  | (Humanities, Software) -> 1
-
-let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
-  let damage = (compare_types p1 p2) * (snd a) in
-  let current_hp = p2.hp in
-  let new_hp = current_hp - damage in
-  if new_hp < 0 then {p2 with hp = 0} else
-  {p2 with hp = new_hp}
+let update_camldex_after_catch camldex p =
+  if List.mem p camldex then camldex else camldex@[p]
 
 let rec first_pokecaml camldex =
   match camldex with
@@ -70,12 +39,8 @@ let rec update_camldex_after_attack camldex p =
   | h::t -> h::(update_camldex_after_attack t p)
 
 let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
-  (*TODO: What if your pokecaml dies? Need to switch current_pokecaml.
-          Need to check has_lost
+  (*TODO: Need to output that you're switching the pokecaml when current one dies
           Case insensitive user input*)
-  if has_won wild then
-    let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
-  else
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     let () = print_string "It's your turn! What will you do?\n
@@ -89,7 +54,7 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
     else if input = "catch" then
       if (catch wild) = true then
         let () = print_endline ("You successfully caught " ^ wild.name ^ "!") in
-        camldex@[wild]
+        update_camldex_after_catch camldex wild
       else let () =print_string("Catch did not work\n") in battle camldex wild 1
     else
       if (valid_attack current_pokecaml input) then
@@ -97,7 +62,9 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
         let wild = attack current_pokecaml a wild in
         let () = print_string ("You attacked with " ^ input ^ "\n") in
         let ()=print_string(wild.name^"'s HP is now "^string_of_int(wild.hp)) in
-        let () = print_newline () in battle camldex wild 1
+        if has_fainted wild then
+          let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
+        else let () = print_newline () in battle camldex wild 1
       else
         let () = print_string "You did not enter a valid input.\n" in
         battle camldex wild 0
@@ -106,10 +73,19 @@ let rec battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
     let current_pokecaml = attack wild opponent_attack current_pokecaml in
     let ()=print_string (wild.name ^" attacked with "^ (fst opponent_attack)) in
     let () = print_newline () in
-    let () = print_string (current_pokecaml.name ^ "'s HP is now " ^
+    let () = print_endline (current_pokecaml.name ^ "'s HP is now " ^
                             string_of_int(current_pokecaml.hp)) in
     let camldex = update_camldex_after_attack camldex current_pokecaml in
-    let () = print_newline() in battle camldex wild 0
+    if has_fainted current_pokecaml then
+      let () = print_endline (current_pokecaml.name^" fainted!") in
+      if all_fainted camldex then
+        let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
+        exit 0
+      else
+        let () = print_endline "Switch pokecaml..." in
+        let () = print_newline() in battle (switch camldex) wild 0
+    else
+      let () = print_newline() in battle camldex wild 0
 
 let run_wild (camldex : pokecaml list) : pokecaml list =
   let length_pokecamls = List.length all_pokecaml in

@@ -4,6 +4,9 @@ open Trainer_battle
 
 type command = Quit | Camldex | Help | Battle | Undetermined
 
+let all_caught (camldex : pokecaml list): bool =
+  (List.length camldex) = (List.length all_pokecaml)
+
 let find_command (input : string) : command =
   match (String.lowercase input) with
   | "quit" -> Quit
@@ -38,7 +41,9 @@ let rec quitting (input : string) : bool =
   quitting (String.lowercase (read_line ()))
 
 let rec game (camldex: pokecaml list) : unit =
-  (*TODO: implement win and lose the game*)
+  if all_caught camldex
+    then print_endline "You are a pokecaml master! GAMEOVER"
+  else
   let () = print_string ">>> " in
   let input = read_line () in
   match find_command input with
