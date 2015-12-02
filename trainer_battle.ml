@@ -64,7 +64,7 @@ let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int): pokecaml l
       let input = String.lowercase (read_line ()) in
       match input with
       | "switch" -> battle (switch camldex) p2 1
-      | _ -> print_string "TODO: perform user attack" p1
+      | _ -> (*TODO: perform user attack*) p1
     else
       let () = print_endline ("It's the trainers turn; they're using "^trainer_p.name) in
       let () = print_endline "TODO: implement trainer logic" in p1
