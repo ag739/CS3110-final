@@ -1,6 +1,21 @@
 {
   "pokecaml": [
     {
+      "name": "Interpreter",
+      "attacks": [
+        {
+          "attack": "Eval",
+          "damage": 10
+        },
+        {
+          "attack": "Env",
+          "damage": 8
+        }
+      ],
+      "p_type": "Software",
+      "HP": 100
+    },
+    {
       "name": "Camlchu",
       "attacks": [
         {
@@ -109,14 +124,19 @@
   ],
   "trainers": [
     {
-      "name": "Random trainer",
-      "pokecaml": ["Piazza"],
-      "intro": "Don't be anonymous...show your face!"
+      "name": "DJ OCaml",
+      "pokecaml": ["Recursee", "Deferredata"],
+      "intro": "This battle that is about to start is going to be FIRE!"
     },
     {
-      "name": "Test trainer",
-      "pokecaml": ["Recursee", "Deferredata"],
-      "intro": "Just testing out the JSON!"
+      "name": "Prelim Master",
+      "pokecaml": ["Camlchu", "Interpreter", "Piazza"],
+      "intro": "If I can ruin the curve by getting a perfect score on all of my prelims, I can definitely defeat you!"
+    },
+    {
+      "name": "Anonymous",
+      "pokecaml": ["Piazza"],
+      "intro": "My name will always remain anonymous to classmates!"
     }
   ]
 }
