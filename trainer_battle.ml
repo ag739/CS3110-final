@@ -1,6 +1,6 @@
 open Pokecaml
 
-type trainer = {name: string; poke_list: pokecaml list; intro: string}
+type trainer = {tname: string; poke_list: pokecaml list; intro: string}
 
 let file = Yojson.Basic.from_file (Sys.argv.(1))
 
@@ -34,7 +34,7 @@ let rec trainer_pokecaml_record_list (lst : string list) =
   | h::t -> (find_by_name all_pokecaml h)::(trainer_pokecaml_record_list t)
 
 let trainer_record (index : int) =
-  { name = List.nth trainer_names index;
+  { tname = List.nth trainer_names index;
     poke_list = trainer_pokecaml_record_list (List.nth trainer_pokecaml_names index);
     intro = List.nth trainer_intros index; }
 
@@ -59,6 +59,6 @@ let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in
   let random_int = Random.int (length_trainers) in
   let trainer = List.nth all_trainers random_int in
-  let () = print_endline ("Trainer " ^ trainer.name ^ " appeared!") in
+  let () = print_endline ("Trainer " ^ trainer.tname ^ " appeared!") in
   let () = print_endline trainer.intro in
   battle camldex trainer.poke_list
