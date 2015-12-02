@@ -10,6 +10,6 @@ val all_trainers : trainer list
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex and the opponents pokecaml list  *)
-val battle : pokecaml list -> pokecaml list -> pokecaml list
+val battle : pokecaml list -> pokecaml list -> int -> pokecaml list
 
 val run_trainer : pokecaml list -> pokecaml list

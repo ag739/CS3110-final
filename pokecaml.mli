@@ -26,3 +26,9 @@
 (** Takes first pokecaml and second pokecaml as input, returns second pokecaml
   * with lowered HP *)
   val attack : pokecaml -> (string * int) -> pokecaml -> pokecaml
+
+  (** Returns: first pokecaml in the list that does not have an hp of 0.*)
+  val first_pokecaml : pokecaml list -> pokecaml
+
+  (**Print all attacks*)
+  val print_attacks: (string * int) list -> unit

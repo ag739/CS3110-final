@@ -93,6 +93,16 @@ let all_fainted (camldex : pokecaml list) : bool =
 let has_fainted (p : pokecaml) : bool =
   p.hp = 0
 
+let rec first_pokecaml camldex =
+  match camldex with
+  | [] -> failwith "This should not happen because we check if you lost"
+  | h::t -> if h.hp > 0 then h else first_pokecaml t
+
+let rec print_attacks (attacks : (string * int) list) : unit =
+  match attacks with
+  | [] -> print_newline ()
+  | (a,_)::t -> let () = print_string (a ^ "\n") in print_attacks t
+
 let compare_types p1 p2 =
   let p1_type = p1.pokecaml_type in
   let p2_type = p2.pokecaml_type in

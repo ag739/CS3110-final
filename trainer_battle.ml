@@ -47,13 +47,27 @@ let all_trainers= all_trainer_generator trainer_names 0
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
-let battle (p1: pokecaml list) (p2: pokecaml list) : pokecaml list =
-  (*TODO implement*)
+let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int): pokecaml list =
   if all_fainted p1 then
     let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
   else if all_fainted p2 then
     let () = print_endline "You defeated this trainer!" in p1
-  else let () = print_endline "This hasn't been implemented yet" in p1
+  else
+    let my_p = first_pokecaml p1 in
+    let trainer_p = first_pokecaml p2 in
+    if player = 0 then
+      let () = print_string "It's your turn! What will you do?\n
+                            Type \"switch\" to switch your pokecaml.\n
+                            Or, you can type any of your attacks:\n" in
+      let () = print_attacks my_p.attacks in (* <--TODO: THIS ISN'T WORKING*)
+      let () = print_string ">>> " in
+      let input = String.lowercase (read_line ()) in
+      match input with
+      | "switch" -> battle (switch camldex) p2 1
+      | _ -> print_string "TODO: perform user attack" p1
+    else
+      let () = print_endline ("It's the trainers turn; they're using "^trainer_p.name) in
+      let () = print_endline "TODO: implement trainer logic" in p1
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in
@@ -61,4 +75,4 @@ let run_trainer (camldex : pokecaml list) : pokecaml list =
   let trainer = List.nth all_trainers random_int in
   let () = print_endline ("Trainer " ^ trainer.tname ^ " appeared!") in
   let () = print_endline trainer.intro in
-  battle camldex trainer.poke_list
+  battle camldex trainer.poke_list 0

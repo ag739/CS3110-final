@@ -11,16 +11,6 @@ let rec list_mem lst item =
 let update_camldex_after_catch camldex p =
   if list_mem camldex p then camldex else camldex@[p]
 
-let rec first_pokecaml camldex =
-  match camldex with
-  | [] -> failwith "This should not happen because we check if you lost"
-  | h::t -> if h.hp > 0 then h else first_pokecaml t
-
-let rec print_attacks (attacks : (string * int) list) : unit =
-  match attacks with
-  | [] -> print_newline ()
-  | (a,_)::t -> let () = print_string (a ^ "\n") in print_attacks t
-
 let rec get_attack (p: pokecaml) (a : string) : (string * int) =
   match (p.attacks) with
   | [] -> failwith "Empty list"
