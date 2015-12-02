@@ -67,6 +67,7 @@ let you_won_msg =
   So, congrats on being a pokecaml master! GAMEOVER."
 
 let rec game (camldex: pokecaml list) : unit =
+  let _ = Random.self_init () in
   if all_caught camldex
     then print_endline you_won_msg
   else
