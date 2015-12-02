@@ -73,7 +73,7 @@ let pokecaml_record (index : int) : pokecaml=
                     | "Software" -> Software
                     | "Humanities" -> Humanities
                     | _ -> failwith "improperly formatted p_type in json");
-    hp = let () = print_int index in let () = print_int (List.length pokecaml_hps) in List.nth pokecaml_hps index;}
+    hp = List.nth pokecaml_hps index;}
 
 let rec all_pokecaml_generator lst start_int : pokecaml list=
   match lst with

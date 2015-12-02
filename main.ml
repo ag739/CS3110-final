@@ -53,9 +53,22 @@ let rec heal_all camldex =
             let f = fun x -> List.nth all_pokecaml index = x in
             let p = List.find f all_pokecaml in p::(heal_all t)
 
+let you_won_msg =
+  "You wanna be the very best, like no one ever was.
+  To catch them was your real test, to save us is your cause.
+  You traveled across Gates Hall, searching far and wide.
+  Each Pokecaml to understand, the functional power inside!
+  (Pokecaml gotta catch them all)
+  It's you and OCaml, you know it's your destiny!
+  Pokecaml, oh, they're your best friend in a world of programming languages.
+  Pokecaml (gotta catch em all),
+  Elegance so true, immutability will pull you through!
+  3110 trained me well...PO-KE-CAML, GOTTA CATCH EM ALL!\n
+  So, congrats on being a pokecaml master! GAMEOVER."
+
 let rec game (camldex: pokecaml list) : unit =
   if all_caught camldex
-    then print_endline "You are a pokecaml master! GAMEOVER"
+    then print_endline you_won_msg
   else
   let () = print_string ">>> " in
   let input = read_line () in
