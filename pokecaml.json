@@ -137,6 +137,11 @@
       "name": "Anonymous",
       "pokecaml": ["Piazza"],
       "intro": "My name will always remain anonymous to classmates!"
+    },
+    {
+      "name": "Genki",
+      "pokecaml": ["Recursee", "Proofle", "Immutabilitypuff"],
+      "intro": "I'm going to give you a 100, but I'm also going to give all of your Pokecaml an HP of 0!"
     }
   ]
 }
