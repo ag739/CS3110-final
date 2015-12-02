@@ -82,21 +82,14 @@ let rec first_camldex input =
   | "recursee" -> let () = print_endline "You have picked Recursee!" in
                   let () = print_endline "You're ready to start your journey!
                   Type \"help\" if you forgot the commands I taught you." in
-                  [{name = "Recursee"; attacks= [("Base case", 8); ("Rec", 12);
-                  ("Return", 7); ("Tail-recursion", 10)];
-                  pokecaml_type = Software; hp= 100}]
+                  [find_by_name all_pokecaml "Recursee"]
   | "deferredata" -> let () = print_endline "You have picked Deferredata!" in
                   let () = print_endline "You're ready to start your journey!
                   Type \"help\" if you forgot the commands I taught you." in
-                  [{name = "Deferredata"; attacks= [("Bind", 6); ("Upon", 4);
-                  ("Return", 7); (">>=", 12)];
-                  pokecaml_type = Hardware; hp= 100}]
+                  [find_by_name all_pokecaml "Deferredata"]
   | "proofle" -> let () = print_endline "You have picked Proofle!" in
-                  let () = print_endline "You're ready to start your journey!
-                  Type \"help\" if you forgot the commands I taught you." in
-                  [{name = "Proofle"; attacks= [("Induction", 10);
-                  ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
-                  pokecaml_type = Humanities; hp= 100}]
+                  let () = print_endline "You're ready to start your journey!" in
+                  [find_by_name all_pokecaml "Proofle"]
   | _ -> let () = print_string "Please try again, Professor Michael \"Oak\" Clarkson does not have that Pokecaml!\n\n>>> " in first_camldex (read_line ())
 
 let () =

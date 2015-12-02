@@ -6,22 +6,83 @@ type pokecaml = { name: string;
                   hp: int
                 }
 
+let file = Yojson.Basic.from_file (Sys.argv.(1))
+
+let top_level_string_extract (t : Yojson.Basic.json) (key : string) : string list =
+  let open Yojson.Basic.Util in
+  [t]
+  |> filter_member "pokecaml"
+  |> flatten
+  |> filter_member key
+  |> filter_string
+
+let top_level_int_extract (t : Yojson.Basic.json) (key : string) : int list =
+  let open Yojson.Basic.Util in
+  [t]
+  |> filter_member "pokecaml"
+  |> flatten
+  |> filter_member key
+  |> filter_int
+
+let top_level_list_extract (t : Yojson.Basic.json) (key : string) =
+  let open Yojson.Basic.Util in
+  [t]
+  |> filter_member "pokecaml"
+  |> flatten
+  |> filter_member key
+  |> filter_list
+
+let pokecaml_names = top_level_string_extract file "name"
+
+let pokecaml_p_types = top_level_string_extract file "p_type"
+
+let pokecaml_hps = top_level_int_extract file "HP"
+
+let pokecaml_attacks = top_level_list_extract file "attacks"
+
+let pokecaml_attack_names =
+  let open Yojson.Basic.Util in List.map
+  (fun file -> filter_member "attack" file |> filter_string) pokecaml_attacks
+
+let pokecaml_attack_damages =
+  let open Yojson.Basic.Util in List.map
+  (fun file -> filter_member "damage" file |> filter_int) pokecaml_attacks
+
+let rec make_pairs x y =
+  match x, y with
+  | [] , [] -> []
+  | h1::t1, h2::t2 -> (h1,h2)::make_pairs t1 t2
+  | _, _ -> failwith "improperly formatted json attacks"
+
+let rec find_by_name lst name =
+  match lst with
+  | [] -> failwith "Pokecaml does not exist"
+  | h::t -> if h.name = name then h else find_by_name t name
+
+let get_attack_pair (index : int) : (string * int) list =
+  match (List.nth pokecaml_attack_names index),
+  (List.nth pokecaml_attack_damages index) with
+  | x , y -> make_pairs x y
+  (*((List.nth pokecaml_attack_names index), (List.nth pokecaml_attack_damages index))*)
+
+let pokecaml_record (index : int) : pokecaml=
+  { name = List.nth pokecaml_names index;
+    attacks = get_attack_pair index;
+    pokecaml_type = (match List.nth pokecaml_p_types index with
+                    | "Hardware" -> Hardware
+                    | "Software" -> Software
+                    | "Humanities" -> Humanities
+                    | _ -> failwith "improperly formatted p_type in json");
+    hp = let () = print_int index in let () = print_int (List.length pokecaml_hps) in List.nth pokecaml_hps index;}
+
+let rec all_pokecaml_generator lst start_int : pokecaml list=
+  match lst with
+  | [] -> []
+  | h::t -> pokecaml_record start_int::all_pokecaml_generator t (start_int + 1)
+
 let camldex = []
 
-let all_pokecaml=[{name = "Camlchu"; attacks= [("electrocute" ,8)];
-                    pokecaml_type= Hardware; hp= 100};
-                  {name = "Piazza"; attacks= [("question", 3)];
-                    pokecaml_type= Humanities; hp= 100};
-                  {name = "Immutabilitypuff"; attacks= [("pattern match", 10);
-                    ("infinite recursion", 2)]; pokecaml_type= Software; hp= 100};
-                  {name = "Recursee"; attacks= [("Base case", 8); ("Rec", 12);
-                    ("Return", 7); ("Tail-recursion", 10)];
-                    pokecaml_type = Software; hp= 100};
-                  {name = "Deferredata"; attacks= [("Bind", 6); ("Upon", 4);
-                    ("Return", 7); (">>=", 12)]; pokecaml_type = Hardware; hp= 100};
-                  {name = "Proofle"; attacks= [("Induction", 10);
-                    ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
-                    pokecaml_type = Humanities; hp= 100}]
+let all_pokecaml= all_pokecaml_generator pokecaml_names 0
 
 let all_fainted (camldex : pokecaml list) : bool =
   let rec helper c = (match c with
@@ -53,16 +114,36 @@ let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
   if new_hp < 0 then {p2 with hp = 0} else
   {p2 with hp = new_hp}
 
-let rec new_lst item lst original_lst=
+let rec remove lst x =
   match lst with
-  | [] -> let () = print_string "You don't have this pokecaml in your camldex. Pick a different one\n>>> " in
-          new_lst (read_line()) original_lst original_lst
+  | [] -> []
+  | h::t -> if h = x then t else h::(remove t x)
+
+
+(*TODO: Make this work recursively so you can choose again*)
+(*let rec new_lst item lst original_lst=
+  match lst with
+  | [] -> let () = print_string "You don't have this pokecaml in your camldex.\n>>> " in
+          []
   | h::t -> if String.lowercase (h.name) = String.lowercase (item) then
               if h.hp = 0 then
-                let () = print_string "This pokecaml has fainted. Pick a different one\n>>> " in
-                new_lst (read_line()) original_lst original_lst
-              else h::t
-            else (new_lst item t original_lst)@[h]
+                let () = print_string "This pokecaml has fainted. It cannot be used.\n>>> " in
+                []
+              else let() = print_endline "wooooo" in h::(List.)
+            else h::(new_lst item t original_lst)*)
+
+let rec new_list name lst =
+  let pokecaml = List.filter (fun x -> String.lowercase (x.name) = String.lowercase (name)) lst in
+  match pokecaml with
+  | [] -> let () = print_string "You don't have this pokecaml in your camldex.\n>>> " in
+          new_list (read_line ()) lst
+  | h::t -> if String.lowercase (h.name) = String.lowercase (name) then
+              if h.hp = 0 then
+                let () = print_string "This pokecaml has fainted. It cannot be used.\n>>> " in
+                new_list (read_line ()) lst
+              else h::(remove lst h)
+            else failwith "camldex should be a set"
+
 
 let rec all_names lst =
   match lst with
@@ -74,4 +155,4 @@ let switch (camldex : pokecaml list) =
   let () = print_endline "These are the pokecaml in your camldex:" in
   let () = all_names camldex in
   let () = print_string ">>> " in
-  new_lst (read_line ()) camldex camldex
+  new_list (read_line ()) camldex

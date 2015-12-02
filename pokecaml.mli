@@ -21,6 +21,8 @@
   (** Check if a single pokecaml has an hp of 0 *)
   val has_fainted: pokecaml -> bool
 
+  val find_by_name : pokecaml list -> string -> pokecaml
+
 (** Takes first pokecaml and second pokecaml as input, returns second pokecaml
   * with lowered HP *)
   val attack : pokecaml -> (string * int) -> pokecaml -> pokecaml

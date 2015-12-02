@@ -1,0 +1,122 @@
+{
+  "pokecaml": [
+    {
+      "name": "Camlchu",
+      "attacks": [
+        {
+          "attack": "Electrocute",
+          "damage": 8
+        }
+      ],
+      "p_type": "Hardware",
+      "HP": 100
+    },
+    {
+      "name": "Piazza",
+      "attacks": [
+        {
+          "attack": "Question",
+          "damage": 3
+        }
+      ],
+      "p_type": "Software",
+      "HP": 100
+    },
+    {
+      "name": "Immutabilitypuff",
+      "attacks": [
+        {
+          "attack": "Pattern Match",
+          "damage": 10
+        },
+        {
+          "attack": "Infinite Recursion",
+          "damage": 2
+        }
+      ],
+      "p_type": "Software",
+      "HP": 100
+    },
+    {
+      "name": "Recursee",
+      "attacks": [
+        {
+          "attack": "Base case",
+          "damage": 8
+        },
+        {
+          "attack": "Rec",
+          "damage": 12
+        },
+        {
+          "attack": "Return",
+          "damage": 10
+        },
+        {
+          "attack": "Tail-recursion",
+          "damage": 10
+        }
+      ],
+      "p_type": "Software",
+      "HP": 100
+    },
+    {
+      "name": "Deferredata",
+      "attacks": [
+        {
+          "attack": "Bind",
+          "damage": 6
+        },
+        {
+          "attack": "Upon",
+          "damage": 4
+        },
+        {
+          "attack": "Return",
+          "damage": 7
+        },
+        {
+          "attack": ">>=",
+          "damage": 12
+        }
+      ],
+      "p_type": "Hardware",
+      "HP": 100
+    },
+    {
+      "name": "Proofle",
+      "attacks": [
+        {
+          "attack": "Induction",
+          "damage": 10
+        },
+        {
+          "attack": "Equivalence",
+          "damage": 8
+        },
+        {
+          "attack": "Math",
+          "damage": 7
+        },
+        {
+          "attack": "Specify",
+          "damage": 11
+        }
+      ],
+      "p_type": "Hardware",
+      "HP": 100
+    }
+  ],
+  "trainers": [
+    {
+      "name": "Random trainer",
+      "pokecaml": ["Piazza"],
+      "intro": "Don't be anonymous...show your face!"
+    },
+    {
+      "name": "Test trainer",
+      "pokecaml": ["Recursee", "Deferredata"],
+      "intro": "Just testing out the JSON!"
+    }
+  ]
+}

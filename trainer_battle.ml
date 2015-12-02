@@ -2,12 +2,48 @@ open Pokecaml
 
 type trainer = {name: string; poke_list: pokecaml list; intro: string}
 
-let all_trainers  = [{name = "Random trainer";
-                      poke_list = [
-                        {name = "Piazza"; attacks= [("question", 3)];
-                        pokecaml_type= Humanities; hp= 100};
-                      ]; intro = "Don't be anonymous...show your face!"
-                    }]
+let file = Yojson.Basic.from_file (Sys.argv.(1))
+
+let trainer_string_extract (t : Yojson.Basic.json) (key : string) : string list =
+  let open Yojson.Basic.Util in
+  [t]
+  |> filter_member "trainers"
+  |> flatten
+  |> filter_member key
+  |> filter_string
+
+let trainer_list_extract (t : Yojson.Basic.json) (key : string) =
+  let open Yojson.Basic.Util in
+  [t]
+  |> filter_member "trainers"
+  |> flatten
+  |> filter_member key
+  |> filter_list
+
+let trainer_names = trainer_string_extract file "name"
+
+let trainer_intros = trainer_string_extract file "intro"
+
+let trainer_pokecaml_names =
+  let open Yojson.Basic.Util in List.map
+  (fun file -> file |> filter_string) (trainer_list_extract file "pokecaml")
+
+let rec trainer_pokecaml_record_list (lst : string list) =
+  match lst with
+  | [] -> []
+  | h::t -> (find_by_name all_pokecaml h)::(trainer_pokecaml_record_list t)
+
+let trainer_record (index : int) =
+  { name = List.nth trainer_names index;
+    poke_list = trainer_pokecaml_record_list (List.nth trainer_pokecaml_names index);
+    intro = List.nth trainer_intros index; }
+
+let rec all_trainer_generator lst start_int : trainer list=
+  match lst with
+  | [] -> []
+  | h::t -> trainer_record start_int::all_trainer_generator t (start_int + 1)
+
+let all_trainers= all_trainer_generator trainer_names 0
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
