@@ -14,7 +14,7 @@ let _ = assert (find_command "heal pokecaml" = Heal)
 let _ = assert (find_command "Heal PokeCaml" = Heal)
 let _ = assert (find_command "abcd" = Undetermined)*)
 
-let _ = assert (all_trainers =
+let test_all_trainers () = assert (all_trainers =
         [{tname = "DJ OCaml";
           poke_list = [{name = "Recursee"; attacks = [("Base case", 8); ("Rec", 12);
           ("Return", 10); ("Tail-recursion", 10)]; pokecaml_type = Software; hp = 100};
@@ -39,8 +39,8 @@ let _ = assert (all_trainers =
           intro = "My name will always remain anonymous to classmates!";
           };
         ])
-
-let _ = assert (all_pokecaml =
+(* Test of Pokecaml *)
+let test_all_pokecaml () = assert (all_pokecaml =
         [{name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
           pokecaml_type = Software; hp = 100};
          {name = "Camlchu"; attacks = [("Electrocute", 8)];
@@ -65,8 +65,56 @@ let fainted_pokecaml =
     {name = "Piazza"; attacks = [("Question", 3)];
     pokecaml_type = Software; hp = 0}]
 
-let _ = assert (all_fainted fainted_pokecaml)
+let test_all_fainted () = assert (all_fainted fainted_pokecaml)
 
-let _ = assert (has_fainted (List.nth fainted_pokecaml 0))
+let test_has_fainted () = assert (has_fainted (List.nth fainted_pokecaml 0))
 
-let _ = print_endline "All tests passed!"
+(*TODO: Test switch*)
+
+let test_attack () =
+  assert (attack {name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
+          pokecaml_type = Software; hp = 100} ("Eval", 10)
+          {name = "Camlchu"; attacks = [("Electrocute", 8)];
+          pokecaml_type = Hardware; hp = 100} =
+          {name = "Camlchu"; attacks = [("Electrocute", 8)];
+          pokecaml_type = Hardware; hp = 60})
+
+let test_first_pokecaml_not_hp_0 () =
+  assert (first_pokecaml all_pokecaml = {name = "Interpreter";
+          attacks = [("Eval", 10); ("Env", 8)];
+          pokecaml_type = Software; hp = 100})
+
+let test_first_pokecaml_some_hp_0 () =
+  let camls = [{name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
+          pokecaml_type = Software; hp = 0};
+         {name = "Camlchu"; attacks = [("Electrocute", 8)];
+          pokecaml_type = Hardware; hp = 0};
+         {name = "Piazza"; attacks = [("Question", 3)];
+          pokecaml_type = Software; hp = 50};
+         {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10); ("Infinite Recursion", 2)];
+          pokecaml_type = Software; hp = 80};] in
+  assert (first_pokecaml camls = {name = "Piazza"; attacks = [("Question", 3)];
+          pokecaml_type = Software; hp = 50})
+
+(* Tests of Wild_pokemon_battle *)
+
+let test_caml = {name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
+          pokecaml_type = Software; hp = 100}
+
+let test_catch_true () =
+  assert (catch {test_caml with hp = 15})
+
+let test_catch_false () =
+  assert (not (catch {test_caml with hp = 16}))
+
+let () =
+  test_all_trainers ();
+  test_all_pokecaml ();
+  test_has_fainted ();
+  test_all_fainted ();
+  test_attack ();
+  test_first_pokecaml_not_hp_0 ();
+  test_first_pokecaml_some_hp_0 ();
+  test_catch_false ();
+  test_catch_true ();
+  print_endline "All tests passed!"
