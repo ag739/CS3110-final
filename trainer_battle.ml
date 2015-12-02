@@ -2,12 +2,31 @@ open Pokecaml
 
 type trainer = {name: string; poke_list: pokecaml list; intro: string}
 
-let all_trainers  = [{name = "Random trainer";
+let all_trainers  = [ {name = "DJ OCaml";
+                      poke_list = [
+                        {name = "Recursee"; attacks= [("Base case", 8); ("Rec", 12);
+                        ("Return", 7); ("Tail-recursion", 10)];
+                        pokecaml_type = Software; hp= 100};
+                        {name = "Deferredata"; attacks= [("Bind", 6); ("Upon", 4);
+                        ("Return", 7); (">>=", 12)]; pokecaml_type = Hardware; hp= 100};];
+                      intro = "This battle that is about to start is going to be FIRE!"};
+                      {name = "Prelim Master";
+                      poke_list = [
+                        {name = "Camlchu"; attacks= [("electrocute" ,8)];
+                        pokecaml_type= Hardware; hp= 100};
+                        {name = "Interpreter"; attacks= [("eval", 10);("env"), 8];
+                        pokecaml_type = Software; hp= 100};
+                        {name = "Piazza"; attacks= [("question", 3)];
+                        pokecaml_type= Humanities; hp= 100};];
+                      intro = "If I can ruin the curve by getting a perfect score
+                      on all of my prelims, I can definitely defeat you!"};
+                      {name = "Anonymous";
                       poke_list = [
                         {name = "Piazza"; attacks= [("question", 3)];
-                        pokecaml_type= Humanities; hp= 100};
-                      ]; intro = "Don't be anonymous...show your face!"
-                    }]
+                        pokecaml_type= Humanities; hp= 100};];
+                      intro = "My name will always remain anonymous to classmates!";
+                      }
+                    ]
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)

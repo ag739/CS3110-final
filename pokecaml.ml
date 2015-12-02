@@ -10,6 +10,8 @@ let camldex = []
 
 let all_pokecaml=[{name = "Camlchu"; attacks= [("electrocute" ,8)];
                     pokecaml_type= Hardware; hp= 100};
+                  {name = "Interpreter"; attacks= [("eval", 10);("env"), 8];
+                    pokecaml_type = Software; hp=100};
                   {name = "Piazza"; attacks= [("question", 3)];
                     pokecaml_type= Humanities; hp= 100};
                   {name = "Immutabilitypuff"; attacks= [("pattern match", 10);
