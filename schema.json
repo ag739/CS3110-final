@@ -1,0 +1,54 @@
+/** Used jsonschema.net **/
+{
+  "type": "object",
+  "properties": {
+    "pokecaml": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "attacks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "attack": {"type": "string"},
+                "damage": {"type": "integer"}
+              }
+            }
+          },
+          "p_type": {"type": "string"},
+          "HP": {"type": "integer"}
+        },
+        "required": [
+          "name",
+          "attacks",
+          "p_type",
+          "HP"
+        ]
+      },
+      "required": [
+        "6"
+      ]
+    },
+    "trainers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "pokecaml": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "intro": {"type": "string"}
+        }
+      }
+    }
+  },
+  "required": [
+    "pokecaml",
+    "trainers"
+  ]
+}
