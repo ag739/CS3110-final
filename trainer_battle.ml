@@ -33,22 +33,23 @@ let rec trainer_pokecaml_record_list (lst : string list) =
   | [] -> []
   | h::t -> (find_by_name all_pokecaml h)::(trainer_pokecaml_record_list t)
 
-let trainer_record (index : int) =
+let trainer_record (index : int) : trainer =
   { tname = List.nth trainer_names index;
     poke_list = trainer_pokecaml_record_list (List.nth trainer_pokecaml_names index);
     intro = List.nth trainer_intros index; }
 
-let rec all_trainer_generator lst start_int : trainer list=
+let rec all_trainer_generator (lst : string list) (start_int : int)
+                               : trainer list =
   match lst with
   | [] -> []
   | h::t -> trainer_record start_int::all_trainer_generator t (start_int + 1)
 
-let all_trainers= all_trainer_generator trainer_names 0
+let all_trainers = all_trainer_generator trainer_names 0
 
-let sort_attacks lst =
+let sort_attacks (lst : (string * int) list) : (string * int) list =
   List.sort (fun x y -> compare (snd x) (snd y)) lst
 
-let determine_attack lst =
+let determine_attack (lst : (string * int) list) : (string * int) =
   let rand = Random.int 15 in
   match sort_attacks lst with
   | [] -> failwith "Pokecaml's attacks list was empty!"
@@ -61,7 +62,8 @@ let determine_attack lst =
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
-                            (p_list : pokecaml list) (o_list : pokecaml list) =
+                        (p_list : pokecaml list) (o_list : pokecaml list)
+                        : pokecaml list =
   (*TODO:
    * check if input was a valid attack and get the attack pair
    * perform attack on opponent; print that you printed the opponent and their new hp
@@ -70,7 +72,8 @@ let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml
   *)
   p_list
 
-let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int): pokecaml list =
+let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
+                : pokecaml list =
   if all_fainted p1 then
     let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
   else if all_fainted p2 then

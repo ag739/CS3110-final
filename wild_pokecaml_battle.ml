@@ -3,12 +3,13 @@ open Pokecaml
 let catch (wild : pokecaml) : bool =
   if wild.hp > 15 then false else true
 
-let rec list_mem lst item =
+let rec list_mem (lst : pokecaml list) (item : pokecaml) : bool =
   match lst with
   | [] -> false
   | h::t -> if h.name = item.name then true else list_mem t item
 
-let update_camldex_after_catch camldex p =
+let update_camldex_after_catch (camldex : pokecaml list) (p : pokecaml)
+                                : pokecaml list =
   if list_mem camldex p then camldex else camldex@[p]
 
 let rec get_attack (p: pokecaml) (a : string) : (string * int) =
@@ -16,25 +17,27 @@ let rec get_attack (p: pokecaml) (a : string) : (string * int) =
   | [] -> failwith "Empty list"
   | (s,i)::t -> if String.lowercase s = a then (s,i) else get_attack {p with attacks=t} a
 
-let rec valid_attack (p) (input) =
+let rec valid_attack (p: pokecaml) (input : string) : bool =
   match p.attacks with
   | [] -> false
   | (s,i)::t -> if (String.lowercase s) = input then true
                 else valid_attack {p with attacks=t} input
 
-let wild_attack p =
+let wild_attack (p : pokecaml) : (string * int) =
   let attack_list = p.attacks in
   let index = Random.int (List.length attack_list) in
   List.nth attack_list index
 
-let rec update_camldex_after_attack camldex p =
+let rec update_camldex_after_attack (camldex : pokecaml list) (p : pokecaml)
+                                    : pokecaml list =
   match camldex with
   | [] -> []
   | h::t when h.name=p.name -> p::t
   | h::t -> h::(update_camldex_after_attack t p)
 
 let rec perform_user_attack (input : string) (current_pokecaml : pokecaml)
-                        (wild : pokecaml) (camldex : pokecaml list) =
+                            (wild : pokecaml) (camldex : pokecaml list)
+                            : pokecaml list =
   if (valid_attack current_pokecaml input) then
     let a = get_attack current_pokecaml input in
     let wild = attack current_pokecaml a wild in
@@ -48,7 +51,7 @@ let rec perform_user_attack (input : string) (current_pokecaml : pokecaml)
     battle camldex wild 0
 
 and handle_fainted (current_pokecaml : pokecaml) (camldex : pokecaml list)
-                   (wild : pokecaml) =
+                   (wild : pokecaml) : pokecaml list =
   let () = print_endline (current_pokecaml.name^" fainted!") in
   if all_fainted camldex then
     let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
@@ -57,7 +60,7 @@ and handle_fainted (current_pokecaml : pokecaml) (camldex : pokecaml list)
     let () = print_endline "Switch pokecaml..." in
     let () = print_newline() in battle (switch camldex) wild 0
 
-and battle (camldex : pokecaml list) (wild : pokecaml) (player: int)=
+and battle (camldex : pokecaml list) (wild : pokecaml) (player: int) : pokecaml list =
   let current_pokecaml = first_pokecaml camldex in
   if player = 0 then
     (let () = print_string "It's your turn! What will you do?\n

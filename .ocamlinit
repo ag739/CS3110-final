@@ -16,6 +16,7 @@
 #load "wild_pokecaml_battle.d.cmo";;
 #load "trainer_battle.d.cmo";;
 #load "main.d.cmo";;
+#load "gameplay.d.cmo";;
 
 (** For convenience, we open a bunch of modules *)
 open Pokecaml
