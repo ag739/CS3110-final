@@ -45,6 +45,19 @@ let rec all_trainer_generator lst start_int : trainer list=
 
 let all_trainers= all_trainer_generator trainer_names 0
 
+let sort_attacks lst =
+  List.sort (fun x y -> compare (snd x) (snd y)) lst
+
+let determine_attack lst =
+  let rand = Random.int 15 in
+  match sort_attacks lst with
+  | [] -> failwith "Pokecaml's attacks list was empty!"
+  | a::[] -> a
+  | a::b::[] -> if rand < 9 then a else b
+  | a::b::c::[] -> if rand < 8 then a else if rand < 12 then b else c
+  | a::b::c::d::t -> if rand < 6 then a else if rand < 10 then b else if
+                     rand < 13 then c else d
+
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
