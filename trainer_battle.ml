@@ -47,6 +47,16 @@ let all_trainers= all_trainer_generator trainer_names 0
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
+let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
+                            (p_list : pokecaml list) (o_list : pokecaml list) =
+  (*TODO:
+   * check if input was a valid attack and get the attack pair
+   * perform attack on opponent; print that you printed the opponent and their new hp
+   * check if opponent fainted; if yes, print that you defeated the opponent and switch to next pokecaml
+   * check if all of the opponent's pokecaml have fainted; if yes you won
+  *)
+  p_list
+
 let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int): pokecaml list =
   if all_fainted p1 then
     let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
@@ -59,14 +69,16 @@ let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int): pokecaml l
       let () = print_string "It's your turn! What will you do?\n
                             Type \"switch\" to switch your pokecaml.\n
                             Or, you can type any of your attacks:\n" in
-      let () = print_attacks my_p.attacks in (* <--TODO: THIS ISN'T WORKING*)
+      let () = print_attacks my_p.attacks in
       let () = print_string ">>> " in
       let input = String.lowercase (read_line ()) in
       match input with
-      | "switch" -> battle (switch camldex) p2 1
-      | _ -> (*TODO: perform user attack*) p1
+      | "switch" -> battle (switch p1) p2 1
+      | _ -> let () = print_endline "TODO: perform user attack" in
+              let p1 = perform_user_attack input my_p trainer_p p1 p2 in
+              battle p1 p2 1
     else
-      let () = print_endline ("It's the trainers turn; they're using "^trainer_p.name) in
+      let () = print_endline ("It's the trainers turn with pokecaml "^trainer_p.name) in
       let () = print_endline "TODO: implement trainer logic" in p1
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
