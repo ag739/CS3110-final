@@ -30,5 +30,11 @@
   (** Returns: first pokecaml in the list that does not have an hp of 0.*)
   val first_pokecaml : pokecaml list -> pokecaml
 
-  (**Print all attacks*)
+  (** Print all attacks*)
   val print_attacks: (string * int) list -> unit
+
+  (** Checks if pokecaml has attack name*)
+  val valid_attack: pokecaml -> string -> bool
+
+  (** Returns: the attack name the pokecaml that matches the string input.*)
+  val get_attack: pokecaml -> string -> string * int

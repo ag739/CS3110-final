@@ -13,7 +13,3 @@ val update_camldex_after_catch : pokecaml list -> pokecaml -> pokecaml list
 
 val perform_user_attack : string -> pokecaml -> pokecaml -> pokecaml list ->
                           pokecaml list
-
-val get_attack : pokecaml -> string -> (string * int)
-
-val valid_attack : pokecaml -> string -> bool

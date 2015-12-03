@@ -167,3 +167,14 @@ let switch (camldex : pokecaml list) : pokecaml list =
   let () = all_names camldex in
   let () = print_string ">>> " in
   new_list (read_line ()) camldex
+
+let rec get_attack (p: pokecaml) (a : string) : (string * int) =
+  match (p.attacks) with
+  | [] -> failwith "Empty list"
+  | (s,i)::t -> if String.lowercase s = a then (s,i) else get_attack {p with attacks=t} a
+
+let rec valid_attack (p: pokecaml) (input : string) : bool =
+  match p.attacks with
+  | [] -> false
+  | (s,i)::t -> if (String.lowercase s) = input then true
+                else valid_attack {p with attacks=t} input

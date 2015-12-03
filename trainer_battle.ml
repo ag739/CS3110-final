@@ -61,7 +61,7 @@ let determine_attack (lst : (string * int) list) : (string * int) =
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
-let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
+let rec perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
                         (p_list : pokecaml list) (o_list : pokecaml list)
                         : pokecaml list =
   (*TODO:
@@ -70,7 +70,17 @@ let perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml
    * check if opponent fainted; if yes, print that you defeated the opponent and switch to next pokecaml
    * check if all of the opponent's pokecaml have fainted; if yes you won
   *)
-  p_list
+  if (valid_attack player input) then
+    let a = get_attack player input in
+    let opponent = attack player a opponent in
+    let () = print_string ("You attacked with " ^ input ^ "\n") in
+    let ()=print_endline(opponent.name^"'s HP is now "^string_of_int(opponent.hp)) in
+    if has_fainted opponent then
+      let () = print_endline (opponent.name ^ " has fainted!") in p_list
+    else let () = print_newline () in p_list
+  else
+    let () = print_string "You did not enter a valid input.\n" in p_list
+  (*TODO: return is not working. Look at wild_pokecaml to fix this.*)
 
 let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
                 : pokecaml list =
@@ -90,8 +100,7 @@ let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
       let input = String.lowercase (read_line ()) in
       match input with
       | "switch" -> battle (switch p1) p2 1
-      | _ -> let () = print_endline "TODO: perform user attack" in
-              let p1 = perform_user_attack input my_p trainer_p p1 p2 in
+      | _ -> let p1 = perform_user_attack input my_p trainer_p p1 p2 in
               battle p1 p2 1
     else
       let () = print_endline ("It's the trainers turn with pokecaml "^trainer_p.name) in
@@ -103,4 +112,6 @@ let run_trainer (camldex : pokecaml list) : pokecaml list =
   let trainer = List.nth all_trainers random_int in
   let () = print_endline ("Trainer " ^ trainer.tname ^ " appeared!") in
   let () = print_endline trainer.intro in
+  let trainer_pokecaml = first_pokecaml (trainer.poke_list) in
+  let () = print_endline (trainer.tname ^ " is using " ^ trainer_pokecaml.name) in
   battle camldex trainer.poke_list 0

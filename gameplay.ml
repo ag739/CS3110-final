@@ -120,8 +120,9 @@ let intro_string =
   Pokecaml trainer; you are one of my top students in CS3110, after all.
   I'll give you unlimited CamlBalls and your first Pokecaml.
   I'll be here to help you out. Remember the commands I taught you in class:
+                   \"Help\" to view all options
                    \"Battle\" to fight an opponent
-                   \"Camldex\" to see your Camldex
+                   \"Camldex\" to see your current pokecaml list
                    \"Heal Pokecaml\" to heal all of your pokecaml
                    \"Quit\" to end the game forever
   I have three Pokecaml, but I can only give you one:

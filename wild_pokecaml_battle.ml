@@ -12,17 +12,6 @@ let update_camldex_after_catch (camldex : pokecaml list) (p : pokecaml)
                                 : pokecaml list =
   if list_mem camldex p then camldex else camldex@[p]
 
-let rec get_attack (p: pokecaml) (a : string) : (string * int) =
-  match (p.attacks) with
-  | [] -> failwith "Empty list"
-  | (s,i)::t -> if String.lowercase s = a then (s,i) else get_attack {p with attacks=t} a
-
-let rec valid_attack (p: pokecaml) (input : string) : bool =
-  match p.attacks with
-  | [] -> false
-  | (s,i)::t -> if (String.lowercase s) = input then true
-                else valid_attack {p with attacks=t} input
-
 let wild_attack (p : pokecaml) : (string * int) =
   let attack_list = p.attacks in
   let index = Random.int (List.length attack_list) in
