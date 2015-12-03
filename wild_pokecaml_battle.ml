@@ -1,7 +1,8 @@
 open Pokecaml
 
 let catch (wild : pokecaml) : bool =
-  if wild.hp > 15 then false else true
+  let () = Random.self_init () in
+  if wild.hp > 15 && (Random.int 10) < 7 then false else true
 
 let rec list_mem (lst : pokecaml list) (item : pokecaml) : bool =
   match lst with

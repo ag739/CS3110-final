@@ -3,28 +3,6 @@ open Pokecaml
 open Wild_pokecaml_battle
 open Gameplay
 
-(* Tests of Gameplay *)
-let test_quit_command () = assert (find_command "quit" = Quit)
-let test_Quit_command () = assert (find_command "Quit" = Quit)
-
-let test_camldex_command () = assert (find_command "camldex" = Camldex)
-let test_Camldex_command () = assert (find_command "Camldex" = Camldex)
-
-let test_help_command () = assert (find_command "Help" = Help)
-let test_Help_command () = assert (find_command "help" = Help)
-
-let test_battle_command () = assert (find_command "Battle" = Battle)
-let test_Battle_command () = assert (find_command "battle" = Battle)
-
-let test_heal_command () = assert (find_command "heal pokecaml" = Heal)
-let test_Heal_command () = assert (find_command "Heal PokeCaml" = Heal)
-
-let test_undetermined_command () = assert (find_command "abcd" = Undetermined)
-
-let test_y_quitting () = assert (quitting "y")
-
-let test_n_quitting () = assert (not (quitting "n"))
-
 (* Test Trainers*)
 let test_all_trainers () = assert (all_trainers =
         [{tname = "DJ OCaml";
@@ -113,12 +91,6 @@ let test_first_pokecaml_some_hp_0 () =
 let test_caml = {name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
           pokecaml_type = Software; hp = 90}
 
-let test_catch_true () =
-  assert (catch {test_caml with hp = 15})
-
-let test_catch_false () =
-  assert (not (catch {test_caml with hp = 16}))
-
 let test_update_camldex_after_catch_in () =
   assert (update_camldex_after_catch all_pokecaml test_caml = all_pokecaml)
 
@@ -126,6 +98,38 @@ let test_update_camldex_after_catch_out () =
   assert (update_camldex_after_catch fainted_pokecaml {name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
           ("Math", 7); ("Specify", 11)]; pokecaml_type = Humanities; hp = 100} = fainted_pokecaml@[{name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
           ("Math", 7); ("Specify", 11)]; pokecaml_type = Humanities; hp = 100}])
+
+(* TEST GAMEPLAY *)
+
+let test_quit_command () = assert (find_command "quit" = Quit)
+let test_Quit_command () = assert (find_command "Quit" = Quit)
+
+let test_camldex_command () = assert (find_command "camldex" = Camldex)
+let test_Camldex_command () = assert (find_command "Camldex" = Camldex)
+
+let test_help_command () = assert (find_command "Help" = Help)
+let test_Help_command () = assert (find_command "help" = Help)
+
+let test_battle_command () = assert (find_command "Battle" = Battle)
+let test_Battle_command () = assert (find_command "battle" = Battle)
+
+let test_heal_command () = assert (find_command "heal pokecaml" = Heal)
+let test_Heal_command () = assert (find_command "Heal PokeCaml" = Heal)
+
+let test_undetermined_command () = assert (find_command "abcd" = Undetermined)
+
+let test_y_quitting () = assert (quitting "y")
+
+let test_n_quitting () = assert (not (quitting "n"))
+
+let test_heal_all () = assert(heal_all fainted_pokecaml =
+                      [{List.nth fainted_pokecaml 0 with hp = 100};
+                       {List.nth fainted_pokecaml 1 with hp = 100};
+                       {List.nth fainted_pokecaml 2 with hp = 100}])
+
+let test_get_list_index () = assert(get_list_index all_pokecaml
+                             {name = "Camlchu"; attacks = [("Electrocute", 8)];
+                             pokecaml_type = Hardware; hp = 90} 0 = 1)
 
 let () =
   test_quit_command ();
@@ -148,8 +152,8 @@ let () =
   test_attack ();
   test_first_pokecaml_not_hp_0 ();
   test_first_pokecaml_some_hp_0 ();
-  test_catch_false ();
-  test_catch_true ();
   test_update_camldex_after_catch_in ();
   test_update_camldex_after_catch_out ();
+  test_heal_all ();
+  test_get_list_index ();
   print_endline "All tests passed!"
