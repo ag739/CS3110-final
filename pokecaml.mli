@@ -82,3 +82,8 @@
     *
   *)
   val update_camldex_after_attack: pokecaml list -> pokecaml -> pokecaml list
+
+  (**
+    *
+  *)
+  val remove : pokecaml list -> pokecaml -> pokecaml list

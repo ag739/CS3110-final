@@ -4,7 +4,6 @@ open Gameplay
  * Write specifications
  * Update design doc
  * Finish trainer_battle
- * Randomized catching
  * Finish testing
  *)
 

@@ -59,6 +59,11 @@ let determine_attack (lst : (string * int) list) : (string * int) =
   | a::b::c::d::t -> if rand < 6 then a else if rand < 10 then b else if
                      rand < 13 then c else d
 
+let determine_switch p lst =
+  let new_lst = remove lst p in
+  if p.hp < 30 && Random.int 11 < 7 && not (all_fainted new_lst) then
+    true else false
+
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let rec perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
@@ -78,6 +83,19 @@ let rec perform_user_attack (input : string) (player : pokecaml)(opponent : poke
   else
     let () = print_string "You did not enter a valid input.\n" in
     battle p_list o_list turn
+
+and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
+  (t_list : pokecaml list) (user_list: pokecaml list) : pokecaml list =
+  let () = print_endline ("It's the trainers turn with pokecaml "^t_pokecaml.name) in
+  let () = print_endline "TODO: implement trainer logic..." in
+  (** TODO:
+    * Determine attack / switch and perform that action
+    * Print attack /switch
+  *)
+  if determine_switch t_pokecaml t_list then failwith "TODO: need trainer switch"
+  else failwith "TODO: determine attack"
+
+  (*battle p1 p2 0*)
 
 and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
                 : pokecaml list =
@@ -99,9 +117,7 @@ and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
       | "switch" -> battle (switch p1) p2 1
       | _ -> perform_user_attack input my_p trainer_p p1 p2 0
     else
-      let () = print_endline ("It's the trainers turn with pokecaml "^trainer_p.name) in
-      let () = print_endline "TODO: implement trainer logic..." in
-      battle p1 p2 0
+      trainer_logic trainer_p my_p p2 p1
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in
