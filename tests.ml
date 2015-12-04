@@ -6,8 +6,9 @@ open Gameplay
 (* Test Trainers*)
 let test_all_trainers () = assert (all_trainers =
         [{tname = "DJ OCaml";
-          poke_list = [{name = "Recursee"; attacks = [("Base case", 8); ("Rec", 12);
-          ("Return", 10); ("Tail-recursion", 10)]; pokecaml_type = Software; hp = 100};
+          poke_list = [{name = "Recursee"; attacks = [("Base case", 8);
+          ("Rec", 12); ("Return", 10); ("Tail-recursion", 10)];
+          pokecaml_type = Software; hp = 100};
           {name = "Deferredata"; attacks = [("Bind", 6); ("Upon", 4);
           ("Return", 7); (">>=", 12)]; pokecaml_type = Hardware; hp = 100}];
           intro = "This battle that is about to start is going to be FIRE!";
@@ -20,7 +21,8 @@ let test_all_trainers () = assert (all_trainers =
           pokecaml_type = Software; hp = 100};
           {name = "Piazza"; attacks = [("Question", 3)];
           pokecaml_type = Software; hp = 100}];
-          intro = "If I can ruin the curve by getting a perfect score on all of my prelims, I can definitely defeat you!";
+          intro = "If I can ruin the curve by getting a perfect score on all"^
+            " of my prelims, I can definitely defeat you!";
           };
 
           {tname = "Anonymous";
@@ -37,10 +39,12 @@ let test_all_pokecaml () = assert (all_pokecaml =
           pokecaml_type = Hardware; hp = 100};
          {name = "Piazza"; attacks = [("Question", 3)];
           pokecaml_type = Software; hp = 100};
-         {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10); ("Infinite Recursion", 2)];
+         {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10);
+          ("Infinite Recursion", 2)];
           pokecaml_type = Software; hp = 100};
          {name = "Recursee"; attacks = [("Base case", 8); ("Rec", 12);
-          ("Return", 10); ("Tail-recursion", 10)]; pokecaml_type = Software; hp = 100};
+          ("Return", 10); ("Tail-recursion", 10)];
+          pokecaml_type = Software; hp = 100};
          {name = "Deferredata"; attacks = [("Bind", 6); ("Upon", 4);
           ("Return", 7); (">>=", 12)]; pokecaml_type = Hardware; hp = 100};
          {name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
@@ -81,7 +85,8 @@ let test_first_pokecaml_some_hp_0 () =
           pokecaml_type = Hardware; hp = 0};
          {name = "Piazza"; attacks = [("Question", 3)];
           pokecaml_type = Software; hp = 50};
-         {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10); ("Infinite Recursion", 2)];
+         {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10);
+          ("Infinite Recursion", 2)];
           pokecaml_type = Software; hp = 80};] in
   assert (first_pokecaml camls = {name = "Piazza"; attacks = [("Question", 3)];
           pokecaml_type = Software; hp = 50})
@@ -95,9 +100,12 @@ let test_update_camldex_after_catch_in () =
   assert (update_camldex_after_catch all_pokecaml test_caml = all_pokecaml)
 
 let test_update_camldex_after_catch_out () =
-  assert (update_camldex_after_catch fainted_pokecaml {name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
-          ("Math", 7); ("Specify", 11)]; pokecaml_type = Humanities; hp = 100} = fainted_pokecaml@[{name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
-          ("Math", 7); ("Specify", 11)]; pokecaml_type = Humanities; hp = 100}])
+  assert (update_camldex_after_catch fainted_pokecaml
+          {name = "Proofle"; attacks = [("Induction", 10); ("Equivalence", 8);
+          ("Math", 7); ("Specify", 11)]; pokecaml_type = Humanities; hp = 100} =
+          fainted_pokecaml@[{name = "Proofle"; attacks = [("Induction", 10);
+          ("Equivalence", 8); ("Math", 7); ("Specify", 11)];
+          pokecaml_type = Humanities; hp = 100}])
 
 (* TEST GAMEPLAY *)
 
