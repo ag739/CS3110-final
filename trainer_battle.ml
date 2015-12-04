@@ -87,15 +87,23 @@ let rec perform_user_attack (input : string) (player : pokecaml)(opponent : poke
 and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
   (t_list : pokecaml list) (user_list: pokecaml list) : pokecaml list =
   let () = print_endline ("It's the trainers turn with pokecaml "^t_pokecaml.name) in
-  let () = print_endline "TODO: implement trainer logic..." in
-  (** TODO:
-    * Determine attack / switch and perform that action
-    * Print attack /switch
-  *)
   if determine_switch t_pokecaml t_list then failwith "TODO: need trainer switch"
-  else failwith "TODO: determine attack"
-
-  (*battle p1 p2 0*)
+  else
+    let a = determine_attack (t_pokecaml.attacks) in
+    let user_pokecaml = attack t_pokecaml a user_pokecaml in
+    let () = print_endline (t_pokecaml.name ^ " attacked with " ^ (fst a)) in
+    let () = print_endline (user_pokecaml.name^"'s HP is now "^string_of_int(user_pokecaml.hp)) in
+    let user_list = update_camldex_after_attack user_list user_pokecaml in
+    if has_fainted user_pokecaml then
+      let () = print_endline (user_pokecaml.name^" fainted!") in
+      if all_fainted user_list then
+        let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
+        exit 0
+      else
+        let () = print_endline "Switch pokecaml..." in
+      let () = print_newline() in battle (switch user_list) t_list 0
+    else
+      let () = print_newline() in battle user_list t_list 0
 
 and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
                 : pokecaml list =
