@@ -46,8 +46,13 @@ let rec all_trainer_generator (lst : string list) (start_int : int)
 
 let all_trainers = all_trainer_generator trainer_names 0
 
+let desc_compare (x : int) (y : int) : int =
+  if x = y then 0 else
+  if x < y then 1 else
+  -1
+
 let sort_attacks (lst : (string * int) list) : (string * int) list =
-  List.sort (fun x y -> compare (snd x) (snd y)) lst
+  List.sort (fun x y -> desc_compare (snd x) (snd y)) lst
 
 let determine_attack (lst : (string * int) list) : (string * int) =
   let rand = Random.int 15 in
@@ -59,10 +64,20 @@ let determine_attack (lst : (string * int) list) : (string * int) =
   | a::b::c::d::t -> if rand < 6 then a else if rand < 10 then b else if
                      rand < 13 then c else d
 
-let determine_switch p lst =
+let determine_switch (p : pokecaml) (lst : pokecaml list) : bool =
   let new_lst = remove lst p in
   if p.hp < 30 && Random.int 11 < 7 && not (all_fainted new_lst) then
     true else false
+
+let sort_pokecaml_by_hp (lst : pokecaml list) : pokecaml list =
+  List.sort (fun x y -> desc_compare (x.hp) (y.hp)) lst
+
+let best_pokecaml_choice (lst : pokecaml list) : pokecaml =
+  List.nth (sort_pokecaml_by_hp lst) 0
+
+let switched_trainer_inventory (lst : pokecaml list) (p : pokecaml)
+                               : pokecaml list =
+  (best_pokecaml_choice lst)::(remove lst p)
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
