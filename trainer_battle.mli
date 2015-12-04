@@ -19,7 +19,7 @@ open Pokecaml
 
   (**
     * [switched_trainer_inventory camldex p] returns a list with the [pokecaml]
-    * with the highest [hp] in the first position and the remaining [pokecaml]s
-    * from the [camldex] in the remaining positions.
+    * with the highest [hp] in the first position and the trainer's remaining
+    * [pokecaml]s in his/her [camldex] in the remaining positions.
     *)
   val switched_trainer_inventory : pokecaml list -> pokecaml list
