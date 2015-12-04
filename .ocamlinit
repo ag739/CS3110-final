@@ -6,6 +6,7 @@
 
 (** This stuff is generally useful, it is copied from ~/.ocamlinit *)
 #use "topfind";;
+#require "async";;
 #require "pa_ounit";;
 #require "qcheck";;
 #load "assertions.cma";;
@@ -20,3 +21,4 @@
 
 (** For convenience, we open a bunch of modules *)
 open Pokecaml
+open Async.Std

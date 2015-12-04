@@ -1,5 +1,3 @@
-#load "str.cma"
-#require "async"
 open Async.Std
 
 let sec n = Core.Std.Time.Span.of_float n
@@ -13,8 +11,9 @@ let rec printing_string_lst (lst : bytes list) =
   | []-> return ()
   | h::t-> return_after h 0.01 >>= fun s -> print_string s; printing_string_lst t
 
-let split_string (s : string) =
-  Str.split (Str.regexp "") s
+let rec split_string s =
+  if String.length s = 1 then [s] else
+  [String.sub s 0 1]@(split_string (String.sub s 1 ((String.length s)-1)))
 
 let tell_story s =
   let lst = split_string s in

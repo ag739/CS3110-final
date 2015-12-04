@@ -1,1 +1,2 @@
-compile.opam_packages=yojson
+compile.opam_packages=yojson, async
+compile.thread=true

@@ -134,19 +134,6 @@ let rec remove (lst : pokecaml list) (x : pokecaml) : pokecaml list =
   | [] -> []
   | h::t -> if h = x then t else h::(remove t x)
 
-
-(*TODO: Make this work recursively so you can choose again*)
-(*let rec new_lst item lst original_lst=
-  match lst with
-  | [] -> let () = print_string "You don't have this pokecaml in your camldex.\n>>> " in
-          []
-  | h::t -> if String.lowercase (h.name) = String.lowercase (item) then
-              if h.hp = 0 then
-                let () = print_string "This pokecaml has fainted. It cannot be used.\n>>> " in
-                []
-              else let() = print_endline "wooooo" in h::(List.)
-            else h::(new_lst item t original_lst)*)
-
 let rec new_list (name : string) (lst : pokecaml list) : pokecaml list =
   let pokecaml = List.filter (fun x -> String.lowercase (x.name) = String.lowercase (name)) lst in
   match pokecaml with

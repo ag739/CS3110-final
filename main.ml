@@ -1,5 +1,6 @@
+open Printing
 open Gameplay
 
 let () =
-  let () = print_string intro_string in
+  let _ = tell_story intro_string in
   game (first_camldex (read_line ()))
