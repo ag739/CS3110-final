@@ -64,20 +64,23 @@ let determine_attack (lst : (string * int) list) : (string * int) =
   | a::b::c::d::t -> if rand < 6 then a else if rand < 10 then b else if
                      rand < 13 then c else d
 
-let determine_switch (p : pokecaml) (lst : pokecaml list) : bool =
-  let new_lst = remove lst p in
-  if p.hp < 30 && Random.int 11 < 7 && not (all_fainted new_lst) then
-    true else false
-
 let sort_pokecaml_by_hp (lst : pokecaml list) : pokecaml list =
   List.sort (fun x y -> desc_compare (x.hp) (y.hp)) lst
 
 let best_pokecaml_choice (lst : pokecaml list) : pokecaml =
   List.nth (sort_pokecaml_by_hp lst) 0
 
+let determine_switch (p : pokecaml) (lst : pokecaml list) : bool =
+  let new_lst = remove lst p in
+  let () = Random.self_init () in
+  if p.hp < 30 && Random.int 6 < 2 && not (all_fainted new_lst) && not
+  (best_pokecaml_choice lst = p) then
+    true else false
+
 let switched_trainer_inventory (lst : pokecaml list) (p : pokecaml)
                                : pokecaml list =
-  (best_pokecaml_choice lst)::(remove lst p)
+  let best = best_pokecaml_choice lst in
+  best::(remove lst best)
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
@@ -100,9 +103,13 @@ let rec perform_user_attack (input : string) (player : pokecaml)(opponent : poke
     battle p_list o_list turn
 
 and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
-  (t_list : pokecaml list) (user_list: pokecaml list) : pokecaml list =
+  (t_list : pokecaml list) (user_list: pokecaml list) (turn: int) : pokecaml list =
   let () = print_endline ("It's the trainers turn with pokecaml "^t_pokecaml.name) in
-  if determine_switch t_pokecaml t_list then failwith "TODO: need trainer switch"
+  if determine_switch t_pokecaml t_list then
+    let new_t_list = switched_trainer_inventory t_list t_pokecaml in
+    let () = print_endline ("The trainer withdrew "^t_pokecaml.name^" and sent out "^
+    (List.nth new_t_list 0).name^"!") in
+    battle user_list new_t_list 0
   else
     let a = determine_attack (t_pokecaml.attacks) in
     let user_pokecaml = attack t_pokecaml a user_pokecaml in
@@ -140,7 +147,7 @@ and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
       | "switch" -> battle (switch p1) p2 1
       | _ -> perform_user_attack input my_p trainer_p p1 p2 0
     else
-      trainer_logic trainer_p my_p p2 p1
+      trainer_logic trainer_p my_p p2 p1 turn
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in

@@ -107,6 +107,9 @@ let rec print_attacks (attacks : (string * int) list) : unit =
 let compare_types (p1 : pokecaml) (p2 : pokecaml) : int =
   let p1_type = p1.pokecaml_type in
   let p2_type = p2.pokecaml_type in
+  let () = Random.self_init () in
+  let change = Random.int 3 in
+  let num =
   match p1_type, p2_type with
   | (Software, Software) -> 3
   | (Software, Hardware) -> 4
@@ -116,7 +119,8 @@ let compare_types (p1 : pokecaml) (p2 : pokecaml) : int =
   | (Hardware, Humanities) -> 4
   | (Humanities, Humanities) -> 3
   | (Humanities, Hardware) -> 2
-  | (Humanities, Software) -> 1
+  | (Humanities, Software) -> 1 in
+  if change = 2 then num + 1 else if change = 0 then num - 1 else num
 
 let attack (p1 : pokecaml) (a : (string * int) ) (p2 : pokecaml) : pokecaml =
   let damage = (compare_types p1 p2) * (snd a) in
