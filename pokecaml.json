@@ -16,6 +16,29 @@
       "HP": 100
     },
     {
+      "name": "#flOCaml",
+      "attacks": [
+        {
+          "attack": "Rap",
+          "damage": 10
+        },
+        {
+          "attack": "Burrito",
+          "damage": 6
+        },
+        {
+          "attack": "Fire",
+          "damage": 11
+        },
+        {
+          "attack": "Bass drop",
+          "damage": 8
+        }
+      ],
+      "p_type": "Humanities",
+      "HP": 100
+    },
+    {
       "name": "Camlchu",
       "attacks": [
         {
@@ -120,12 +143,35 @@
       ],
       "p_type": "Humanities",
       "HP": 100
+    },
+    {
+      "name": "Camel",
+      "attacks": [
+        {
+          "attack": "Sandstorm",
+          "damage": 3
+        },
+        {
+          "attack": "Tackle",
+          "damage": 9
+        },
+        {
+          "attack": "Hump",
+          "damage": 12
+        },
+        {
+          "attack": "Desert",
+          "damage": 6
+        }
+      ],
+      "p_type": "Humanities",
+      "HP": 100
     }
   ],
   "trainers": [
     {
       "name": "DJ OCaml",
-      "pokecaml": ["Recursee", "Deferredata"],
+      "pokecaml": ["Recursee", "Deferredata", "#flOCaml"],
       "intro": "This battle that is about to start is going to be FIRE!"
     },
     {
@@ -142,6 +188,11 @@
       "name": "Genki",
       "pokecaml": ["Recursee", "Proofle", "Immutabilitypuff"],
       "intro": "I'm going to give you a 100, but I'm also going to give all of your Pokecaml an HP of 0!"
+    },
+    {
+      "name": "Functor",
+      "pokecaml": ["Camel"],
+      "intro": "I'll Uptown Funk you up."
     }
   ]
 }
