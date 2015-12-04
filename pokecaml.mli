@@ -13,12 +13,6 @@
                    pokecaml_type: p_type; hp: int}
 
   (**
-    * [camldex] is a set of the player's [pokecaml]
-    * RI: [camldex] must not contain more than one of each pokecaml.
-    *)
-  val camldex : pokecaml list
-
-  (**
     * [all_pokecaml] is a set of all [pokecaml] in the game
     * RI: [pokecaml] must not contain more than one of each pokecaml.
     *)

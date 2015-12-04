@@ -8,7 +8,8 @@ type pokecaml = { name: string;
 
 let file = Yojson.Basic.from_file (Sys.argv.(1))
 
-let top_level_string_extract (t : Yojson.Basic.json) (key : string) : string list =
+let top_level_string_extract (t : Yojson.Basic.json) (key : string)
+                             : string list =
   let open Yojson.Basic.Util in
   [t]
   |> filter_member "pokecaml"
@@ -54,8 +55,8 @@ let rec make_pairs (x : string list) (y : int list) : (string * int) list =
   | h1::t1, h2::t2 -> (h1,h2)::make_pairs t1 t2
   | _, _ -> failwith "improperly formatted json attacks"
 
-let rec find_by_name (lst : pokecaml list) (name : string) : pokecaml =
-  match lst with
+let rec find_by_name (user_list : pokecaml list) (name : string) : pokecaml =
+  match user_list with
   | [] -> failwith "Pokecaml does not exist"
   | h::t -> if h.name = name then h else find_by_name t name
 
@@ -81,21 +82,19 @@ let rec all_pokecaml_generator (lst : string list) (start_int : int)
   | [] -> []
   | h::t -> pokecaml_record start_int::all_pokecaml_generator t (start_int + 1)
 
-let camldex = []
-
 let all_pokecaml= all_pokecaml_generator pokecaml_names 0
 
-let all_fainted (camldex : pokecaml list) : bool =
+let all_fainted (user_list : pokecaml list) : bool =
   let rec helper c = (match c with
   | [] -> 0
   | h::t -> h.hp + helper t
-  ) in helper camldex = 0
+  ) in helper user_list = 0
 
 let has_fainted (p : pokecaml) : bool =
   p.hp = 0
 
-let rec first_pokecaml (camldex : pokecaml list) : pokecaml =
-  match camldex with
+let rec first_pokecaml (user_list : pokecaml list) : pokecaml =
+  match user_list with
   | [] -> failwith "This should not happen because we check if you lost"
   | h::t -> if h.hp > 0 then h else first_pokecaml t
 
@@ -134,18 +133,22 @@ let rec remove (lst : pokecaml list) (x : pokecaml) : pokecaml list =
   | [] -> []
   | h::t -> if h = x then t else h::(remove t x)
 
-let rec new_list (name : string) (lst : pokecaml list) : pokecaml list =
-  let pokecaml = List.filter (fun x -> String.lowercase (x.name) = String.lowercase (name)) lst in
+let rec new_list (name : string) (user_list : pokecaml list) : pokecaml list =
+  let pokecaml =
+    List.filter (fun x -> String.lowercase (x.name) =
+    String.lowercase (name)) user_list in
   match pokecaml with
-  | [] -> let () = print_string "You don't have this pokecaml in your camldex.\n>>> " in
-          new_list (read_line ()) lst
+  | [] -> let () = print_string
+            "You don't have this pokecaml in your camldex.\n>>> " in
+          new_list (read_line ()) user_list
   | h::t -> if String.lowercase (h.name) = String.lowercase (name) then
               if h.hp = 0 then
-                let () = print_string "This pokecaml has fainted. It cannot be used.\n>>> " in
-                new_list (read_line ()) lst
+                let () = print_string
+                  "This pokecaml has fainted. It cannot be used.\n>>> " in
+                new_list (read_line ()) user_list
               else
                 let () = print_endline ("You are now using " ^ h.name ^"\n") in
-                h::(remove lst h)
+                h::(remove user_list h)
             else failwith "camldex should be a set"
 
 
@@ -155,16 +158,17 @@ let rec all_names (lst : pokecaml list) : unit =
   | h::t -> print_endline ("\""^h.name^"\""^"; hp: "^string_of_int(h.hp));
                 all_names t
 
-let switch (camldex : pokecaml list) : pokecaml list =
+let switch (user_list : pokecaml list) : pokecaml list =
   let () = print_endline "\nThese are the pokecaml in your camldex:" in
-  let () = all_names camldex in
+  let () = all_names user_list in
   let () = print_string "\n>>> " in
-  new_list (read_line ()) camldex
+  new_list (read_line ()) user_list
 
 let rec get_attack (p: pokecaml) (a : string) : (string * int) =
   match (p.attacks) with
   | [] -> failwith "Empty list"
-  | (s,i)::t -> if String.lowercase s = a then (s,i) else get_attack {p with attacks=t} a
+  | (s,i)::t -> if String.lowercase s = a then (s,i)
+                else get_attack {p with attacks=t} a
 
 let rec valid_attack (p: pokecaml) (input : string) : bool =
   match p.attacks with
@@ -172,9 +176,9 @@ let rec valid_attack (p: pokecaml) (input : string) : bool =
   | (s,i)::t -> if (String.lowercase s) = input then true
                 else valid_attack {p with attacks=t} input
 
-let rec update_camldex_after_attack (camldex : pokecaml list) (p : pokecaml)
+let rec update_camldex_after_attack (user_list : pokecaml list) (p : pokecaml)
                                     : pokecaml list =
-  match camldex with
+  match user_list with
   | [] -> []
   | h::t when h.name=p.name -> p::t
   | h::t -> h::(update_camldex_after_attack t p)
