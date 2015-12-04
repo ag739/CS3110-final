@@ -2,7 +2,8 @@ open Pokecaml
 
 (**
   * [run_wild camldex] calls a battle REPL that handles input and outputs
-  * an updated list to reflect [hp] changes from battles
+  * an updated list to reflect [hp] changes from battles and [pokecaml] added to
+  * the [camldex].
   *)
   val run_wild : pokecaml list -> pokecaml list
 

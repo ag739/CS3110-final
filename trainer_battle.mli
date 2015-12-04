@@ -1,15 +1,18 @@
 open Pokecaml
 
-(** A record containing a string of the trainer name, a list of its pokecaml,
-  * and a string of its introduction
+  (**
+    * [trainer] contains a string of its [tname], a list of [pokecaml] to be in
+    * its [poke_list], and a string to act as its [intro].
+    *)
+  type trainer = {tname: string; poke_list: pokecaml list; intro: string}
+
+  (**
+    * [all_trainers] is a list of all [trainer] types in the game.
+    *)
+  val all_trainers : trainer list
+
+  (**
+  * [run_trainer camldex] calls a battle REPL that handles input and outputs
+  * an updated list to reflect [hp] changes from battles
   *)
-type trainer = {tname: string; poke_list: pokecaml list; intro: string}
-
-(** A list containing all of the trainers *)
-val all_trainers : trainer list
-
-(** A battle REPL to handle input and return output.
-  * Takes as input the CamlDex and the opponents pokecaml list  *)
-val battle : pokecaml list -> pokecaml list -> int -> pokecaml list
-
-val run_trainer : pokecaml list -> pokecaml list
+  val run_trainer : pokecaml list -> pokecaml list
