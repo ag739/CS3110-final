@@ -1,6 +1,9 @@
 open Printing
 open Gameplay
+open Async.Std
 
-let () =
-  let _ = tell_story intro_string in
-  game (first_camldex (read_line ()))
+
+let _ = upon (tell_story intro_string)
+  (fun _ -> game (first_camldex ()))
+
+let _ = Scheduler.go ()

@@ -42,7 +42,7 @@ and p1_logic (camldex : pokecaml list) (wild : pokecaml) (player: int)
   let current_pokecaml = first_pokecaml camldex in
   let opponent_attack = wild_attack wild in
   let current_pokecaml = attack wild opponent_attack current_pokecaml in
-  let ()=print_string (wild.name ^" attacked with "^ (fst opponent_attack)) in
+  let ()=print_string ("Wild "^wild.name ^" attacked with "^ (fst opponent_attack)) in
   let () = print_newline () in
   let () = print_endline (current_pokecaml.name ^ "'s HP is now " ^
     string_of_int(current_pokecaml.hp)) in
@@ -59,9 +59,9 @@ and perform_user_attack (input : string) (current_pokecaml : pokecaml)
     let a = get_attack current_pokecaml input in
     let wild = attack current_pokecaml a wild in
     let () = print_string ("You attacked with " ^ input ^ "\n") in
-    let ()=print_endline(wild.name^"'s HP is now "^string_of_int(wild.hp)) in
+    let ()=print_endline("Wild "^wild.name^"'s HP is now "^string_of_int(wild.hp)) in
     if has_fainted wild then
-      let () = print_endline ("You defeated " ^ wild.name ^ "!") in camldex
+      let () = print_endline ("You defeated Wild " ^ wild.name ^ "!") in camldex
     else let () = print_newline () in battle camldex wild 1
   else
     let () = print_string "You did not enter a valid input.\n" in

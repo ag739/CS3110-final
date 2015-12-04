@@ -1,6 +1,7 @@
 open Pokecaml
 open Wild_pokecaml_battle
 open Trainer_battle
+open Async.Std
 
   (**
     * [command] contains all possible commands for the main REPL in the game.
@@ -50,7 +51,7 @@ open Trainer_battle
     * [first_camldex input] creates a pokecaml list containing the record of the
     * [pokecaml] whose [name] is equal to [input].
     *)
-  val first_camldex : string -> pokecaml list
+  val first_camldex : unit -> pokecaml list
 
   (**
     * [intro_string] is the string printed when the game is started.

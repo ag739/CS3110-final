@@ -96,7 +96,8 @@ let rec game (camldex: pokecaml list) : unit =
                         " Please type a valid command or type help.")
                       in game camldex
 
-let rec first_camldex (input : string) : pokecaml list =
+let rec first_camldex () : pokecaml list =
+  let input = read_line () in
   match (String.lowercase input) with
   | "recursee" -> let () = print_endline "You have picked Recursee!" in
                   let () = print_endline "You're ready to start your journey!
@@ -111,7 +112,7 @@ let rec first_camldex (input : string) : pokecaml list =
                  [find_by_name all_pokecaml "Proofle"]
   | _ -> let () = print_string ("Please try again, Professor Michael \"Oak\" "^
                     "Clarkson does not have that Pokecaml!\n\n>>> ")
-                  in first_camldex (read_line ())
+                  in first_camldex ()
 
 let intro_string =
   "  Hello! I've been waiting for you.\n  ...

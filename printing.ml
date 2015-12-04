@@ -9,7 +9,7 @@ let return_after v delay =
 let rec printing_string_lst (lst : bytes list) =
   match lst with
   | []-> return ()
-  | h::t-> return_after h 0.01 >>= fun s -> print_string s; printing_string_lst t
+  | h::t-> return_after h 0.03 >>= fun s -> printf "%s%!" s; printing_string_lst t
 
 let rec split_string s =
   if String.length s = 1 then [s] else

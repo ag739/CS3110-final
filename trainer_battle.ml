@@ -94,11 +94,11 @@ let rec perform_user_attack (input : string) (player : pokecaml)
     let a = get_attack player input in
     let opponent = attack player a opponent in
     let () = print_string ("You attacked with " ^ input ^ "\n") in
-    let ()=print_endline(opponent.name^"'s HP is now "^
+    let ()=print_endline("Trainer's "^opponent.name^"'s HP is now "^
       string_of_int(opponent.hp)) in
     let () =
       (if has_fainted opponent then
-        print_endline (opponent.name ^ " has fainted!")
+        print_endline ("Trainer's "^opponent.name ^ " has fainted!")
       else print_newline ()) in
     let o_list = update_camldex_after_attack o_list opponent in
     if turn = 0 then battle p_list o_list 1 else battle p_list o_list 0
@@ -124,7 +124,7 @@ and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
   else
     let a = determine_attack (t_pokecaml.attacks) in
     let user_pokecaml = attack t_pokecaml a user_pokecaml in
-    let () = print_endline (t_pokecaml.name ^ " attacked with " ^ (fst a)) in
+    let () = print_endline ("Trainer's "^t_pokecaml.name ^ " attacked with " ^ (fst a)) in
     let () = print_endline (user_pokecaml.name^"'s HP is now "^
       string_of_int(user_pokecaml.hp)) in
     let user_list = update_camldex_after_attack user_list user_pokecaml in
