@@ -18,13 +18,6 @@ let wild_attack (p : pokecaml) : (string * int) =
   let index = Random.int (List.length attack_list) in
   List.nth attack_list index
 
-let rec update_camldex_after_attack (camldex : pokecaml list) (p : pokecaml)
-                                    : pokecaml list =
-  match camldex with
-  | [] -> []
-  | h::t when h.name=p.name -> p::t
-  | h::t -> h::(update_camldex_after_attack t p)
-
 let rec perform_user_attack (input : string) (current_pokecaml : pokecaml)
                             (wild : pokecaml) (camldex : pokecaml list)
                             : pokecaml list =

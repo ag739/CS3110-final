@@ -62,27 +62,24 @@ let determine_attack (lst : (string * int) list) : (string * int) =
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
 let rec perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
-                        (p_list : pokecaml list) (o_list : pokecaml list)
+                        (p_list : pokecaml list) (o_list : pokecaml list) (turn: int)
                         : pokecaml list =
-  (*TODO:
-   * check if input was a valid attack and get the attack pair
-   * perform attack on opponent; print that you printed the opponent and their new hp
-   * check if opponent fainted; if yes, print that you defeated the opponent and switch to next pokecaml
-   * check if all of the opponent's pokecaml have fainted; if yes you won
-  *)
   if (valid_attack player input) then
     let a = get_attack player input in
     let opponent = attack player a opponent in
     let () = print_string ("You attacked with " ^ input ^ "\n") in
     let ()=print_endline(opponent.name^"'s HP is now "^string_of_int(opponent.hp)) in
-    if has_fainted opponent then
-      let () = print_endline (opponent.name ^ " has fainted!") in p_list
-    else let () = print_newline () in p_list
+    let () =
+      (if has_fainted opponent then
+        print_endline (opponent.name ^ " has fainted!")
+      else print_newline ()) in
+    let o_list = update_camldex_after_attack o_list opponent in
+    if turn = 0 then battle p_list o_list 1 else battle p_list o_list 0
   else
-    let () = print_string "You did not enter a valid input.\n" in p_list
-  (*TODO: return is not working. Look at wild_pokecaml to fix this.*)
+    let () = print_string "You did not enter a valid input.\n" in
+    battle p_list o_list turn
 
-let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
+and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
                 : pokecaml list =
   if all_fainted p1 then
     let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
@@ -91,7 +88,7 @@ let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
   else
     let my_p = first_pokecaml p1 in
     let trainer_p = first_pokecaml p2 in
-    if player = 0 then
+    if turn = 0 then
       let () = print_string "It's your turn! What will you do?\n
                             Type \"switch\" to switch your pokecaml.\n
                             Or, you can type any of your attacks:\n" in
@@ -100,11 +97,12 @@ let rec battle (p1: pokecaml list) (p2: pokecaml list) (player: int)
       let input = String.lowercase (read_line ()) in
       match input with
       | "switch" -> battle (switch p1) p2 1
-      | _ -> let p1 = perform_user_attack input my_p trainer_p p1 p2 in
+      | _ -> let p1 = perform_user_attack input my_p trainer_p p1 p2 0 in
               battle p1 p2 1
     else
       let () = print_endline ("It's the trainers turn with pokecaml "^trainer_p.name) in
-      let () = print_endline "TODO: implement trainer logic" in p1
+      let () = print_endline "TODO: implement trainer logic..." in
+      battle p1 p2 0
 
 let run_trainer (camldex : pokecaml list) : pokecaml list =
   let length_trainers = List.length all_trainers in

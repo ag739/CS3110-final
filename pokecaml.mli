@@ -77,3 +77,8 @@
     * and its associated damage.
     *)
   val get_attack: pokecaml -> string -> string * int
+
+  (**
+    *
+  *)
+  val update_camldex_after_attack: pokecaml list -> pokecaml -> pokecaml list

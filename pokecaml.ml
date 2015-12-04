@@ -178,3 +178,10 @@ let rec valid_attack (p: pokecaml) (input : string) : bool =
   | [] -> false
   | (s,i)::t -> if (String.lowercase s) = input then true
                 else valid_attack {p with attacks=t} input
+
+let rec update_camldex_after_attack (camldex : pokecaml list) (p : pokecaml)
+                                    : pokecaml list =
+  match camldex with
+  | [] -> []
+  | h::t when h.name=p.name -> p::t
+  | h::t -> h::(update_camldex_after_attack t p)
