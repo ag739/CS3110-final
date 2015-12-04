@@ -143,7 +143,9 @@ let rec new_list (name : string) (lst : pokecaml list) : pokecaml list =
               if h.hp = 0 then
                 let () = print_string "This pokecaml has fainted. It cannot be used.\n>>> " in
                 new_list (read_line ()) lst
-              else h::(remove lst h)
+              else
+                let () = print_endline ("You are now using " ^ h.name ^"\n") in
+                h::(remove lst h)
             else failwith "camldex should be a set"
 
 
@@ -154,9 +156,9 @@ let rec all_names (lst : pokecaml list) : unit =
                 all_names t
 
 let switch (camldex : pokecaml list) : pokecaml list =
-  let () = print_endline "These are the pokecaml in your camldex:" in
+  let () = print_endline "\nThese are the pokecaml in your camldex:" in
   let () = all_names camldex in
-  let () = print_string ">>> " in
+  let () = print_string "\n>>> " in
   new_list (read_line ()) camldex
 
 let rec get_attack (p: pokecaml) (a : string) : (string * int) =

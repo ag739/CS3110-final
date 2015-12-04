@@ -98,7 +98,7 @@ let rec perform_user_attack (input : string) (player : pokecaml)
       string_of_int(opponent.hp)) in
     let () =
       (if has_fainted opponent then
-        print_endline ("Trainer's "^opponent.name ^ " has fainted!")
+        print_endline ("Trainer's "^opponent.name ^ " has fainted!\n")
       else print_newline ()) in
     let o_list = update_camldex_after_attack o_list opponent in
     if turn = 0 then battle p_list o_list 1 else battle p_list o_list 0
@@ -117,7 +117,7 @@ and switch_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
 and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
                   (t_list : pokecaml list) (user_list: pokecaml list)
                   (turn: int) : pokecaml list =
-  let () = print_endline ("It's the trainers turn with pokecaml "^
+  let () = print_endline ("\nIt's the trainers turn with pokecaml "^
     t_pokecaml.name) in
   if determine_switch t_pokecaml t_list then
     switch_logic t_pokecaml user_pokecaml t_list user_list turn
@@ -129,9 +129,9 @@ and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
       string_of_int(user_pokecaml.hp)) in
     let user_list = update_camldex_after_attack user_list user_pokecaml in
     if has_fainted user_pokecaml then
-      let () = print_endline (user_pokecaml.name^" fainted!") in
+      let () = print_endline (user_pokecaml.name^" fainted!\n") in
       if all_fainted user_list then
-        let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
+        let () = print_endline ("All of your pokecaml fainted...GAMEOVER\n") in
         exit 0
       else
         let () = print_endline "Switch pokecaml..." in
@@ -156,7 +156,7 @@ and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
   if all_fainted p1 then
     let () = print_string "All of your pokecaml fainted...GAMEOVER" in p1
   else if all_fainted p2 then
-    let () = print_endline "You defeated this trainer!" in p1
+    let () = print_endline "You defeated this trainer!\n" in p1
   else
     let my_p = first_pokecaml p1 in
     let trainer_p = first_pokecaml p2 in
@@ -170,7 +170,7 @@ let run_trainer (camldex : pokecaml list) : pokecaml list =
   let random_int = Random.int (length_trainers) in
   let trainer = List.nth all_trainers random_int in
   let () = print_endline ("Trainer " ^ trainer.tname ^ " appeared!") in
-  let () = print_endline trainer.intro in
+  let () = print_endline ("\""^trainer.intro^"\"\n") in
   let trainer_pokecaml = first_pokecaml (trainer.poke_list) in
-  let () = print_endline (trainer.tname ^ " is using " ^ trainer_pokecaml.name)
+  let () = print_endline (trainer.tname ^ " is using " ^ trainer_pokecaml.name^"\n")
   in battle camldex trainer.poke_list 0

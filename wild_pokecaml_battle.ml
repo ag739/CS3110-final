@@ -22,9 +22,9 @@ let rec p0_logic (camldex : pokecaml list) (wild : pokecaml) (player: int)
                  : pokecaml list =
   let current_pokecaml = first_pokecaml camldex in
   let () = print_string "It's your turn! What will you do?\n
-                           Type \"catch\" to catch the wild pokecaml.\n
-                           Type \"switch\" to switch your pokecaml.\n
-                           Or, you can type any of your attacks:\n" in
+  Type \"catch\" to catch the wild pokecaml.\n
+  Type \"switch\" to switch your pokecaml.\n
+  Or, you can type any of your attacks:\n" in
   let () = print_attacks current_pokecaml.attacks in
   let () = print_string ">>> " in
   let input = String.lowercase (read_line ()) in
@@ -58,10 +58,10 @@ and perform_user_attack (input : string) (current_pokecaml : pokecaml)
   if (valid_attack current_pokecaml input) then
     let a = get_attack current_pokecaml input in
     let wild = attack current_pokecaml a wild in
-    let () = print_string ("You attacked with " ^ input ^ "\n") in
+    let () = print_string ("\nYou attacked with " ^ input ^ "\n") in
     let ()=print_endline("Wild "^wild.name^"'s HP is now "^string_of_int(wild.hp)) in
     if has_fainted wild then
-      let () = print_endline ("You defeated Wild " ^ wild.name ^ "!") in camldex
+      let () = print_endline ("\nYou defeated Wild " ^ wild.name ^ "!") in camldex
     else let () = print_newline () in battle camldex wild 1
   else
     let () = print_string "You did not enter a valid input.\n" in
@@ -71,7 +71,7 @@ and handle_fainted (current_pokecaml : pokecaml) (camldex : pokecaml list)
                    (wild : pokecaml) : pokecaml list =
   let () = print_endline (current_pokecaml.name^" fainted!") in
   if all_fainted camldex then
-    let () = print_endline ("All of your pokecaml fainted...GAMEOVER") in
+    let () = print_endline ("All of your pokecaml fainted...GAMEOVER\n") in
     exit 0
   else
     let () = print_endline "Switch pokecaml..." in
@@ -88,5 +88,5 @@ let run_wild (camldex : pokecaml list) : pokecaml list =
   let length_pokecamls = List.length all_pokecaml in
   let random_int = Random.int (length_pokecamls) in
   let wild = List.nth all_pokecaml random_int in
-  let () = print_endline ("A wild " ^ wild.name ^ " appeared!") in
+  let () = print_endline ("\nA wild " ^ wild.name ^ " appeared!\n") in
   battle camldex wild 0
