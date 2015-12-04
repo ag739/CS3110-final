@@ -1,7 +1,6 @@
 open Pokecaml
 open Wild_pokecaml_battle
 open Trainer_battle
-open Async.Std
 
   (**
     * [command] contains all possible commands for the main REPL in the game.

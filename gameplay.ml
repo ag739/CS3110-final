@@ -75,7 +75,7 @@ let rec game (camldex: pokecaml list) : unit =
     let () = print_string "\n>>> " in
     let input = read_line () in
     match find_command input with
-    | Quit -> let () = print_endline "\nAre you sure you want to quit? Y/N\n>>> " in
+    | Quit -> let () = print_string "\nAre you sure you want to quit? Y/N\n>>> " in
               let input = String.lowercase (read_line ()) in
               if quitting input then exit 0 else game camldex
     | Camldex -> let () = print_endline (print_camldex camldex) in game camldex
