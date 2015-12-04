@@ -4,7 +4,8 @@ type trainer = {tname: string; poke_list: pokecaml list; intro: string}
 
 let file = Yojson.Basic.from_file (Sys.argv.(1))
 
-let trainer_string_extract (t : Yojson.Basic.json) (key : string) : string list =
+let trainer_string_extract (t : Yojson.Basic.json) (key : string)
+                           : string list =
   let open Yojson.Basic.Util in
   [t]
   |> filter_member "trainers"
@@ -35,7 +36,8 @@ let rec trainer_pokecaml_record_list (lst : string list) =
 
 let trainer_record (index : int) : trainer =
   { tname = List.nth trainer_names index;
-    poke_list = trainer_pokecaml_record_list (List.nth trainer_pokecaml_names index);
+    poke_list = trainer_pokecaml_record_list
+    (List.nth trainer_pokecaml_names index);
     intro = List.nth trainer_intros index; }
 
 let rec all_trainer_generator (lst : string list) (start_int : int)
@@ -84,14 +86,16 @@ let switched_trainer_inventory (lst : pokecaml list) (p : pokecaml)
 
 (** A battle REPL to handle input and return output.
   * Takes as input the CamlDex (p1) and the opponents pokecaml list (p2) *)
-let rec perform_user_attack (input : string) (player : pokecaml)(opponent : pokecaml)
-                        (p_list : pokecaml list) (o_list : pokecaml list) (turn: int)
-                        : pokecaml list =
+let rec perform_user_attack (input : string) (player : pokecaml)
+                            (opponent : pokecaml) (p_list : pokecaml list)
+                            (o_list : pokecaml list) (turn: int)
+                            : pokecaml list =
   if (valid_attack player input) then
     let a = get_attack player input in
     let opponent = attack player a opponent in
     let () = print_string ("You attacked with " ^ input ^ "\n") in
-    let ()=print_endline(opponent.name^"'s HP is now "^string_of_int(opponent.hp)) in
+    let ()=print_endline(opponent.name^"'s HP is now "^
+      string_of_int(opponent.hp)) in
     let () =
       (if has_fainted opponent then
         print_endline (opponent.name ^ " has fainted!")
@@ -102,19 +106,27 @@ let rec perform_user_attack (input : string) (player : pokecaml)(opponent : poke
     let () = print_string "You did not enter a valid input.\n" in
     battle p_list o_list turn
 
+and switch_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
+                  (t_list : pokecaml list) (user_list: pokecaml list)
+                  (turn: int) : pokecaml list =
+  let new_t_list = switched_trainer_inventory t_list t_pokecaml in
+  let () = print_endline ("The trainer withdrew "^t_pokecaml.name^
+    " and sent out "^(List.nth new_t_list 0).name^"!")
+  in battle user_list new_t_list 0
+
 and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
-  (t_list : pokecaml list) (user_list: pokecaml list) (turn: int) : pokecaml list =
-  let () = print_endline ("It's the trainers turn with pokecaml "^t_pokecaml.name) in
+                  (t_list : pokecaml list) (user_list: pokecaml list)
+                  (turn: int) : pokecaml list =
+  let () = print_endline ("It's the trainers turn with pokecaml "^
+    t_pokecaml.name) in
   if determine_switch t_pokecaml t_list then
-    let new_t_list = switched_trainer_inventory t_list t_pokecaml in
-    let () = print_endline ("The trainer withdrew "^t_pokecaml.name^" and sent out "^
-    (List.nth new_t_list 0).name^"!") in
-    battle user_list new_t_list 0
+    switch_logic t_pokecaml user_pokecaml t_list user_list turn
   else
     let a = determine_attack (t_pokecaml.attacks) in
     let user_pokecaml = attack t_pokecaml a user_pokecaml in
     let () = print_endline (t_pokecaml.name ^ " attacked with " ^ (fst a)) in
-    let () = print_endline (user_pokecaml.name^"'s HP is now "^string_of_int(user_pokecaml.hp)) in
+    let () = print_endline (user_pokecaml.name^"'s HP is now "^
+      string_of_int(user_pokecaml.hp)) in
     let user_list = update_camldex_after_attack user_list user_pokecaml in
     if has_fainted user_pokecaml then
       let () = print_endline (user_pokecaml.name^" fainted!") in
@@ -127,6 +139,18 @@ and trainer_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
     else
       let () = print_newline() in battle user_list t_list 0
 
+and p0_logic (p1: pokecaml list) (p2: pokecaml list) (turn: int)
+             (my_p : pokecaml) (trainer_p : pokecaml) : pokecaml list =
+    let () = print_string "It's your turn! What will you do?\n
+                          Type \"switch\" to switch your pokecaml.\n
+                          Or, you can type any of your attacks:\n" in
+    let () = print_attacks my_p.attacks in
+    let () = print_string ">>> " in
+    let input = String.lowercase (read_line ()) in
+    match input with
+    | "switch" -> battle (switch p1) p2 1
+    | _ -> perform_user_attack input my_p trainer_p p1 p2 0
+
 and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
                 : pokecaml list =
   if all_fainted p1 then
@@ -137,15 +161,7 @@ and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
     let my_p = first_pokecaml p1 in
     let trainer_p = first_pokecaml p2 in
     if turn = 0 then
-      let () = print_string "It's your turn! What will you do?\n
-                            Type \"switch\" to switch your pokecaml.\n
-                            Or, you can type any of your attacks:\n" in
-      let () = print_attacks my_p.attacks in
-      let () = print_string ">>> " in
-      let input = String.lowercase (read_line ()) in
-      match input with
-      | "switch" -> battle (switch p1) p2 1
-      | _ -> perform_user_attack input my_p trainer_p p1 p2 0
+      p0_logic p1 p2 turn my_p trainer_p
     else
       trainer_logic trainer_p my_p p2 p1 turn
 
@@ -156,5 +172,5 @@ let run_trainer (camldex : pokecaml list) : pokecaml list =
   let () = print_endline ("Trainer " ^ trainer.tname ^ " appeared!") in
   let () = print_endline trainer.intro in
   let trainer_pokecaml = first_pokecaml (trainer.poke_list) in
-  let () = print_endline (trainer.tname ^ " is using " ^ trainer_pokecaml.name) in
-  battle camldex trainer.poke_list 0
+  let () = print_endline (trainer.tname ^ " is using " ^ trainer_pokecaml.name)
+  in battle camldex trainer.poke_list 0
