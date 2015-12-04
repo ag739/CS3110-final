@@ -16,6 +16,25 @@
       "HP": 100
     },
     {
+      "name": "CMS",
+      "attacks": [
+        {
+          "attack": "Upload",
+          "damage": 7
+        },
+        {
+          "attack": "Grade",
+          "damage": 9
+        },
+        {
+          "attack": "Group Up",
+          "damage": 4
+        }
+      ],
+      "p_type": "Hardware",
+      "HP": 100
+    },
+    {
       "name": "#flOCaml",
       "attacks": [
         {
@@ -99,6 +118,48 @@
       "HP": 100
     },
     {
+      "name": "Moogle",
+      "attacks": [
+        {
+          "attack": "Search",
+          "damage": 6
+        },
+        {
+          "attack": "Crawl",
+          "damage": 7
+        },
+        {
+          "attack": "TMNT",
+          "damage": 9
+        },
+        {
+          "attack": "Moo",
+          "damage": 3
+        }
+      ],
+      "p_type": "Humanities",
+      "HP": 100
+    },
+    {
+      "name": "List",
+      "attacks": [
+        {
+          "attack": "append",
+          "damage": 5
+        },
+        {
+          "attack": "hd",
+          "damage": 5
+        },
+        {
+          "attack": "nth",
+          "damage": 5
+        }
+      ],
+      "p_type": "Software",
+      "HP": 100
+    },
+    {
       "name": "Deferredata",
       "attacks": [
         {
@@ -114,7 +175,7 @@
           "damage": 7
         },
         {
-          "attack": ">>=",
+          "attack": ">>|",
           "damage": 12
         }
       ],
@@ -193,6 +254,33 @@
       "name": "Functor",
       "pokecaml": ["Camel"],
       "intro": "I'll Uptown Funk you up."
+    },
+    {
+      "name": "Monad the Nomad",
+      "pokecaml": ["Camel", "#flOCaml"],
+      "intro": "I've wandered around to many places in search of the perfect burrito...
+                I mean, Pokecaml battle!"
+    },
+    {
+      "name": "Random Project Team Member Sally",
+      "pokecaml": ["Camlchu","CMS","Proofle"],
+      "intro": "The pokecaml have gone rogue, and so have I!"
+    },
+    {
+      "name": "Ariel",
+      "pokecaml": ["Camlchu", "List", "CMS"],
+      "intro": "In between studying for 3110, I train to be the next Pokecaml master!"
+    },
+    {
+      "name": "Hannah",
+      "pokecaml": ["Moogle", "Camel", "Deferredata"],
+      "intro": "You can tell Professor \"Oak\" Clarkson I'm not in class
+                because I was busy winning this pokecaml battle."
+    },
+    {
+      "name": "Lauren",
+      "pokecaml": ["Proofle", "Immutabilitypuff"],
+      "intro": "This is pokecaml. This is 3110"
     }
   ]
 }
