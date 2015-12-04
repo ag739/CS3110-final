@@ -97,8 +97,7 @@ and battle (p1: pokecaml list) (p2: pokecaml list) (turn: int)
       let input = String.lowercase (read_line ()) in
       match input with
       | "switch" -> battle (switch p1) p2 1
-      | _ -> let p1 = perform_user_attack input my_p trainer_p p1 p2 0 in
-              battle p1 p2 1
+      | _ -> perform_user_attack input my_p trainer_p p1 p2 0
     else
       let () = print_endline ("It's the trainers turn with pokecaml "^trainer_p.name) in
       let () = print_endline "TODO: implement trainer logic..." in
