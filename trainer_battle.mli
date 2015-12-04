@@ -16,3 +16,10 @@ open Pokecaml
   * an updated list to reflect [hp] changes from battles
   *)
   val run_trainer : pokecaml list -> pokecaml list
+
+  (**
+    * [switched_trainer_inventory camldex p] returns a list with the [pokecaml]
+    * with the highest [hp] in the first position and the remaining [pokecaml]s
+    * from the [camldex] in the remaining positions.
+    *)
+  val switched_trainer_inventory : pokecaml list -> pokecaml list

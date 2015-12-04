@@ -31,6 +31,31 @@ let test_all_trainers () = assert (all_trainers =
           intro = "My name will always remain anonymous to classmates!";
           };
         ])
+
+let switched_camls =
+  [{name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
+  pokecaml_type = Software; hp = 10};
+  {name = "Camlchu"; attacks = [("Electrocute", 8)];
+  pokecaml_type = Hardware; hp = 12};
+  {name = "Piazza"; attacks = [("Question", 3)];
+  pokecaml_type = Software; hp = 75};
+  {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10);
+  ("Infinite Recursion", 2)];
+  pokecaml_type = Software; hp = 50}]
+
+
+let test_switched_trainer_inventory () =
+  assert (switched_trainer_inventory switched_camls =
+  [{name = "Piazza"; attacks = [("Question", 3)];
+  pokecaml_type = Software; hp = 75};
+  {name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
+  pokecaml_type = Software; hp = 10};
+  {name = "Camlchu"; attacks = [("Electrocute", 8)];
+  pokecaml_type = Hardware; hp = 12};
+  {name = "Immutabilitypuff"; attacks = [("Pattern Match", 10);
+  ("Infinite Recursion", 2)];
+  pokecaml_type = Software; hp = 50}])
+
 (* Test of Pokecaml *)
 let test_all_pokecaml () = assert (all_pokecaml =
         [{name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
@@ -64,14 +89,6 @@ let test_all_fainted () = assert (all_fainted fainted_pokecaml)
 let test_has_fainted () = assert (has_fainted (List.nth fainted_pokecaml 0))
 
 (*TODO: Test switch*)
-
-let test_attack () =
-  assert (attack {name = "Interpreter"; attacks = [("Eval", 10); ("Env", 8)];
-          pokecaml_type = Software; hp = 100} ("Eval", 10)
-          {name = "Camlchu"; attacks = [("Electrocute", 8)];
-          pokecaml_type = Hardware; hp = 100} =
-          {name = "Camlchu"; attacks = [("Electrocute", 8)];
-          pokecaml_type = Hardware; hp = 60})
 
 let test_first_pokecaml_not_hp_0 () =
   assert (first_pokecaml all_pokecaml = {name = "Interpreter";
@@ -140,6 +157,7 @@ let test_get_list_index () = assert(get_list_index all_pokecaml
                              pokecaml_type = Hardware; hp = 90} 0 = 1)
 
 let () =
+  test_switched_trainer_inventory ();
   test_quit_command ();
   test_Quit_command ();
   test_camldex_command ();
@@ -157,7 +175,6 @@ let () =
   test_all_pokecaml ();
   test_has_fainted ();
   test_all_fainted ();
-  test_attack ();
   test_first_pokecaml_not_hp_0 ();
   test_first_pokecaml_some_hp_0 ();
   test_update_camldex_after_catch_in ();
