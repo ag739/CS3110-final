@@ -19,8 +19,9 @@
   val camldex : pokecaml list
 
   (**
-    * [all_pokecaml] is a set of all [pokecaml] in the game
-    * RI: [pokecaml] must not contain more than one of each pokecaml.
+    * [all_pokecaml] is a set of all [pokecaml] in the game that the player can
+    * battle and catch.
+    * RI: [all_pokecaml] must not contain more than one of each pokecaml.
     *)
   val all_pokecaml : pokecaml list
 
@@ -43,7 +44,7 @@
   val has_fainted: pokecaml -> bool
 
   (**
-    * [find_by_name lst name] is the [pokecaml] in [lst] with the provided
+    * [find_by_name lst name] returns the [pokecaml] in [lst] with the provided
     * [name], and fails if the [pokecaml] is not in [lst]
     *)
   val find_by_name : pokecaml list -> string -> pokecaml
@@ -68,22 +69,24 @@
   val print_attacks: (string * int) list -> unit
 
   (**
-    * [valid_attack p s] is true iff [p] has an attack named [s].
+    * [valid_attack p s] is true iff [p] has an attack named [s] in the attacks
+    * field of its pokecaml type record.
     *)
   val valid_attack: pokecaml -> string -> bool
 
   (**
-    * [get_attack p s] is the pair of the attack name that is equal to [s]
+    * [get_attack p s] returns the pair of the attack name that is equal to [s]
     * and its associated damage.
     *)
   val get_attack: pokecaml -> string -> string * int
 
   (**
-    *
-  *)
+    *[update_camldex_after_attack lst p] returns a pokecaml list with the
+    * updated p (with any changes in hp) in the returned list.
+    *)
   val update_camldex_after_attack: pokecaml list -> pokecaml -> pokecaml list
 
   (**
-    *
-  *)
+    *[remove lst p] returns a new list without [p] in it.
+    *)
   val remove : pokecaml list -> pokecaml -> pokecaml list

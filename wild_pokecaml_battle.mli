@@ -17,7 +17,7 @@ open Pokecaml
   (**
     * [perform_user_attack input p1 p2 camldex] checks if [input] is a valid
     * attack in [p1]'s list of attacks, performs the attack, and provides an
-    * updated [camldex].
+    * updated [camldex] reflecting the change in hp (if any).
     *)
   val perform_user_attack : string -> pokecaml -> pokecaml -> pokecaml list ->
                             pokecaml list
