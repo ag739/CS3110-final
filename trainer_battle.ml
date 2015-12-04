@@ -79,7 +79,7 @@ let determine_switch (p : pokecaml) (lst : pokecaml list) : bool =
   (best_pokecaml_choice lst = p) then
     true else false
 
-let switched_trainer_inventory (lst : pokecaml list) (p : pokecaml)
+let switched_trainer_inventory (lst : pokecaml list)
                                : pokecaml list =
   let best = best_pokecaml_choice lst in
   best::(remove lst best)
@@ -109,7 +109,7 @@ let rec perform_user_attack (input : string) (player : pokecaml)
 and switch_logic (t_pokecaml: pokecaml) (user_pokecaml: pokecaml)
                   (t_list : pokecaml list) (user_list: pokecaml list)
                   (turn: int) : pokecaml list =
-  let new_t_list = switched_trainer_inventory t_list t_pokecaml in
+  let new_t_list = switched_trainer_inventory t_list in
   let () = print_endline ("The trainer withdrew "^t_pokecaml.name^
     " and sent out "^(List.nth new_t_list 0).name^"!")
   in battle user_list new_t_list 0
